@@ -1,7 +1,10 @@
 function App() {
 
   return (
-    <p className='font-bold text-3xl p-5'><span className='text-blue-400'>Hybrid</span><span className='text-blue-800'>Planner</span></p>
+    <div className="container px-4 mx-auto">
+      <p className='font-bold text-3xl'><span className='text-blue-500'>Hybrid</span><span className='text-blue-900'>Planner</span></p>
+      <button className="btn">Button</button>
+    </div>
   )
 }
 

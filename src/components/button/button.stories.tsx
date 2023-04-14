@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { Button } from "./button";
+import { Plus } from "lucide-react";
 
 const meta: Meta<typeof Button> = {
   /* 👇 The title prop is optional.
@@ -29,5 +30,12 @@ export const Disabled: Story = {
   args: {
     ...Base.args,
     disabled: true,
+  },
+};
+
+export const WithIcon: Story = {
+  args: {
+    ...Base.args,
+    icon: <Plus />,
   },
 };

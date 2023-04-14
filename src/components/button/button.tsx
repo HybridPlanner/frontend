@@ -1,10 +1,13 @@
 import classNames from "classnames";
-import { HTMLAttributes, forwardRef } from "react";
+import { ReactElement, forwardRef } from "react";
+import { type LucideIcon } from "lucide-react";
 
-type ButtonProps = {} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+type ButtonProps = {
+  icon?: ReactElement<LucideIcon>;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, ...props }, ref) => {
+  ({ className, children, ...props }, ref) => {
     return (
       <button
         {...props}
@@ -13,9 +16,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           "bg-blue-600 text-white px-4 py-3.5 rounded-lg font-semibold",
           "hover:bg-blue-500 transition-colors ease-in-out duration-150",
           "disabled:bg-gray-300 disabled:cursor-not-allowed disabled:text-gray-500",
+          "inline-flex gap-1",
           className
         )}
-      ></button>
+      >
+        {props.icon}
+        {children}
+      </button>
     );
   }
 );

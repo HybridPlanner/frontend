@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       padding: {
-        "3.5": "10px"
+        "2.5": "10px"
       }
     },
   },

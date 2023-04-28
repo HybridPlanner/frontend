@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { Card } from "./card";
-import { Button } from "../button/button";
+import { Button } from "../base/button/button";
 import { Plus } from "lucide-react";
 
 const meta: Meta<typeof Card> = {

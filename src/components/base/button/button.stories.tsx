@@ -7,7 +7,7 @@ const meta: Meta<typeof Button> = {
    * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
    * to learn how to generate automatic titles
    */
-  title: "Components/Button",
+  title: "Components/Base/Button",
   component: Button,
   argTypes: {
     children: { control: "text" },

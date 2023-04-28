@@ -3,7 +3,7 @@ import { Input } from "./input";
 import { Plus } from "lucide-react";
 
 const meta: Meta<typeof Input> = {
-  title: "Components/Input",
+  title: "Components/Forms/Input",
   component: Input,
   argTypes: {
     id: { control: "text" },
@@ -21,7 +21,7 @@ type Story = StoryObj<typeof Input>;
 export const Base: Story = {
   args: {
     id: "input",
-    label: "Input",
+    label: "Input"
   },
 };
 

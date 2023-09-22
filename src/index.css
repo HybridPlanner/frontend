@@ -6,3 +6,7 @@
 html, body {
     @apply antialiased;
 }
+
+#root {
+    @apply min-h-screen;
+}

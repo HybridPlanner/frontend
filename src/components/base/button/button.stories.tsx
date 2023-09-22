@@ -36,6 +36,6 @@ export const Disabled: Story = {
 export const WithIcon: Story = {
   args: {
     ...Base.args,
-    icon: <Plus />,
+    icon: Plus,
   },
 };

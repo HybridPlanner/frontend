@@ -3,7 +3,7 @@ import { Title } from "./title";
 import { Calendar } from "lucide-react";
 
 const meta: Meta<typeof Title> = {
-  title: "Components/Title",
+  title: "Components/Base/Title",
   component: Title,
   argTypes: {
     children: {

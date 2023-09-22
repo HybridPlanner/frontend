@@ -54,8 +54,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           className
         )}
       >
-        ()
-        {Icon && <Icon className="w-4 h-4" />}
+        {Icon && <Icon className="w-6 h-6" />}
         {children}
       </button>
     );

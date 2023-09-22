@@ -18,10 +18,10 @@ export const Title = forwardRef<HTMLHeadingElement, TitleProps>(
       >
         {Icon && (
           <span
-            className="rounded-full bg-blue-100 px-2 py-2"
+            className="rounded-full bg-blue-100 px-3 py-3"
             aria-hidden="true"
           >
-            <Icon className="w-4 h-4 text-blue-600" />
+            <Icon className="w-6 h-6" />
           </span>
         )}
         {props.children}

@@ -9,11 +9,6 @@ export default function HomePage() {
   const [name, setName] = useState("Louis DePierre");
   const [email, setEmail] = useState("louis@depierre.com");
   const [avatar, setAvatar] = useState(avatarImg);
-  const navigate = useNavigate();
-
-  const handleTryButtonClick = () => {
-    navigate("/login");
-  };
 
   return (
     <div className="container px-4 mx-auto flex flex-col gap-3">
@@ -30,7 +25,7 @@ export default function HomePage() {
           enim ut. Nisl sodales felis tortor volutpat facilisi velit orci.
           Imperdiet vitae imperdiet ultrices sed euismod.
         </p>
-        <Button className="mt-4" onClick={handleTryButtonClick}>
+        <Button className="mt-4" to="/login">
           Try HybridPlanner
         </Button>
       </div>

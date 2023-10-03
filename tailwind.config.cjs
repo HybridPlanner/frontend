@@ -8,6 +8,9 @@ module.exports = {
     extend: {
       padding: {
         "2.5": "10px"
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       }
     },
   },

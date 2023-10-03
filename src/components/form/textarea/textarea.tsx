@@ -2,17 +2,17 @@ import { ReactElement, forwardRef } from "react";
 import { LucideIcon } from "lucide-react";
 import classNames from "classnames";
 
-export type InputProps = {
+export type TextareaProps = {
   id: string;
   label?: string;
   icon?: ReactElement<LucideIcon>;
   error?: string;
-} & React.InputHTMLAttributes<HTMLInputElement>;
+} & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ id, label, error, className, ...props }, ref) => {
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
+  ({ id, label, error, ...props }, ref) => {
     return (
-      <div className={classNames("relative mb-6 group", className)}>
+      <div className="relative mb-6 group">
         {label && (
           <label
             htmlFor={id}
@@ -22,7 +22,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           </label>
         )}
         <div className="relative group">
-          <input
+          <textarea
             {...props}
             placeholder={label}
             id={id}
@@ -40,7 +40,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                 "pl-10": props.icon,
               }
             )}
-          />
+          ></textarea>
 
           <div
             className="absolute pointer-events-none inset-y-0 left-0 flex items-center pl-3 text-gray-500 group-focus-within:text-blue-500 peer-disabled:text-gray-500"

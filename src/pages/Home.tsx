@@ -12,7 +12,7 @@ export default function HomePage() {
 
   return (
     <div className="container px-4 mx-auto flex flex-col gap-3">
-      <Navbar name={name} email={email} avatar={avatar} />
+      <Navbar user={{ name, email, avatar }} />
       <div className="mt-12 mx-6 xl:ml-36 lg:w-2/3 xl:w-1/2">
         <img src={logoImg} alt="logo" className="w-24 h-24 md:w-40 md:h-40" />
         <div className="w-full text-blue-500 text-3xl md:text-5xl font-normal leading-tight break-words">
@@ -25,7 +25,7 @@ export default function HomePage() {
           enim ut. Nisl sodales felis tortor volutpat facilisi velit orci.
           Imperdiet vitae imperdiet ultrices sed euismod.
         </p>
-        <Button className="mt-4" to="/login">
+        <Button className="mt-4" to="/dashboard">
           Try HybridPlanner
         </Button>
       </div>

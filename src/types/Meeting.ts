@@ -1,7 +1,6 @@
 export interface Meeting {
-    id: number;
-    name: string;
-    start_date: string;
-    end_date: string;
-    invitees: string[];
+  start_date: Date;
+  end_date: Date;
+  name: string;
+  invitees: string[];
 }

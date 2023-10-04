@@ -1,14 +1,14 @@
 import { Card } from "@/components/card/card";
 import Navbar from "../Navbar";
 import { Calendar, ChevronDown, Loader2, Plus } from "lucide-react";
-import { addDays } from "date-fns";
-import { setTime } from "@/utils/date";
+import { addDays, isBefore, isEqual } from "date-fns";
+import { setTime, sortMeetings } from "@/utils/date";
 import { MeetingCard } from "@/components/meeting/MeetingCard";
 import { Meeting } from "@/types/Meeting";
 import { MeetingCreateForm } from "./CreateForm";
 import { useEffect, useState } from "react";
 import classNames from "classnames";
-import { getFutureMeetings, getMeeting } from "@/api/meetings";
+import { getFutureMeetings, getPreviousMeetings } from "@/api/meetings";
 
 export function MeetingsDashboard(): JSX.Element {
   const [loading, setLoading] = useState(false);
@@ -29,9 +29,13 @@ export function MeetingsDashboard(): JSX.Element {
   }, [data, error]);
 
   const fetchFutureMeetings = async () => {
+    console.debug("Fetching future meetings");
     setLoading(true);
     try {
       const meetings = await getFutureMeetings();
+      console.debug("Future meeting fetched: %d", meetings.length);
+
+      sortMeetings(meetings);
       setData(meetings);
     } catch (error) {
       if (error instanceof Error) {
@@ -39,8 +43,40 @@ export function MeetingsDashboard(): JSX.Element {
       } else {
         setError("Something went wrong");
       }
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
+  };
+
+  const fetchPreviousMeetings = async () => {
+    console.debug("Fetching previous meetings");
+    setLoading(true);
+    try {
+      let previous_date: Date;
+      if (!data) {
+        console.debug("No previous meeting, fetching until now");
+        previous_date = new Date();
+      } else {
+        const last = data[data?.length - 1];
+        previous_date = last.start_date;
+      }
+      const meetings = await getPreviousMeetings(previous_date);
+      sortMeetings(meetings);
+      console.debug(
+        "Previous meeting fetched until %O: %d",
+        previous_date,
+        meetings.length
+      );
+      setData([...(data ?? []), ...meetings]);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Something went wrong");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -111,6 +147,7 @@ export function MeetingsDashboard(): JSX.Element {
                         : "text-blue-700 hover:text-blue-500",
                       "transition-colors duration-100 ease-in-out font-semibold inline-flex gap-2 items-end"
                     )}
+                    onClick={fetchPreviousMeetings}
                   >
                     Show past meetings
                     {loading ? (

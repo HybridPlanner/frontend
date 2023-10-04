@@ -85,13 +85,21 @@ export function MeetingsDashboard(): JSX.Element {
               withoutBackground={true}
             >
               <div className="flex flex-col gap-4">
-                {meetings.map((meeting) => (
-                  <MeetingCard
-                    className="odd:bg-blue-50 even:bg-gray-50"
-                    meeting={meeting}
-                    key={meeting.start_date + "|" + meeting.end_date}
-                  />
-                ))}
+                {data.length === 0 && (
+                  <div className="text-center p-8">
+                    <p className="text-gray-500">
+                      There is no meetings planned for now...
+                    </p>
+                  </div>
+                )}
+                {data.length > 0 &&
+                  data.map((meeting) => (
+                    <MeetingCard
+                      className="odd:bg-blue-50 even:bg-gray-50"
+                      meeting={meeting}
+                      key={meeting.start_date + "|" + meeting.end_date}
+                    />
+                  ))}
 
                 <div className="relative text-center py-4">
                   <button

@@ -2,13 +2,13 @@ import { CreateMeetingInput, Meeting } from "@/types/Meeting";
 import { apiClient } from ".";
 
 export async function getFutureMeetings(): Promise<Meeting[]> {
-    const response =  await apiClient.get<Meeting[]>("/meetings");
-    return response.data;
+    const response =  await apiClient.get<{meetings: Meeting[]}>("/meetings");
+    return response.data.meetings;
 }
 
 export async function getPreviousMeetings(before: Date): Promise<Meeting[]> {
-    const response = await apiClient.get<Meeting[]>(`/meetings?before=${before.getTime()}`);
-    return response.data;
+    const response = await apiClient.get<{meetings: Meeting[]}>(`/meetings?before=${before.getTime()}`);
+    return response.data.meetings;
 }
 
 export async function createMeeting(data: CreateMeetingInput): Promise<Meeting> {

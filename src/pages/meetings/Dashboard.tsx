@@ -92,14 +92,14 @@ export function MeetingsDashboard(): JSX.Element {
       start_date: setTime(now, 10, 30),
       end_date: setTime(now, 11, 30),
       name: "Operational team meeting",
-      invitees: ["Louis", "John", "Jane"],
+      attendees: ["Louis", "John", "Jane"],
     },
     {
       id: 2,
       start_date: setTime(tomorrow, 16, 15),
       end_date: setTime(tomorrow, 16, 30),
       name: "Sprint planning 2023",
-      invitees: ["Louis", "John", "Jane"],
+      attendees: ["Louis", "John", "Jane"],
     },
   ];
 

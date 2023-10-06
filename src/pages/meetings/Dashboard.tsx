@@ -97,9 +97,9 @@ export function MeetingsDashboard(): JSX.Element {
     <div className="container px-4 mx-auto flex flex-col gap-3 min-h-screen">
       <Navbar />
 
-      <div className="my-auto mx-6 flex flex-col xl:flex-row gap-8">
+      <div className="my-auto mx-6 flex flex-col xl:flex-row gap-16">
         <div className="flex-1">
-          <header className="">
+          <header>
             <h1 className="font-bold text-5xl mb-4">Hey Louis 👋</h1>
             <p>Here are your upcoming meetings.</p>
           </header>
@@ -109,6 +109,7 @@ export function MeetingsDashboard(): JSX.Element {
               icon={<Calendar />}
               cardTitle="Upcoming Meetings"
               withoutBackground={true}
+              className="xl:pr-24"
             >
               <div className="flex flex-col gap-4">
                 {data.length === 0 && (

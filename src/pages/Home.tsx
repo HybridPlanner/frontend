@@ -29,7 +29,11 @@ export default function HomePage() {
           Try HybridPlanner
         </Button>
       </div>
-      <div className="-z-50 absolute bottom-0 left-0 w-full h-full bg-gradient-to-tr from-blue-200 via-blue-50 to-transparent blur-md"></div>
+
+      <div className="w-full h-full overflow-hidden absolute top-0 left-0 -z-20">
+        <div className="-z-50 absolute top-1/2 -left-1/2 w-full rounded-3xl h-full bg-blue-500 bg-opacity-30 transform-gpu -rotate-12 blur-3xl"></div>
+        <div className="-z-50 absolute -top-1/2 -right-1/2 w-full rounded-3xl h-full bg-indigo-500 bg-opacity-30 transform-gpu -rotate-12 blur-3xl"></div>
+      </div>
     </div>
   );
 }

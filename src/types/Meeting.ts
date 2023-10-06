@@ -1,13 +1,13 @@
 export interface Meeting {
   id: number;
-  name: string;
+  title: string;
   start_date: Date;
   end_date: Date;
   attendees: string[];
 }
 
 export interface CreateMeetingInput {
-  name: string;
+  title: string;
   start_date: Date;
   end_date: Date;
   attendees: string[];

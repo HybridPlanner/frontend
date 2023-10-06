@@ -1,0 +1,36 @@
+.colored-background::before {
+  @apply absolute w-full h-full top-0 left-0 right-0 bottom-0 blur-3xl -z-10 flex flex-col opacity-70;
+  @apply content-[''];
+
+  transition: all 750ms ease-in-out;
+  will-change: animation-duration, opacity;
+
+  animation: scrolling ease-in-out infinite alternate 2s;
+
+  background-image: linear-gradient(
+    180deg,
+    theme("colors.blue.400"),
+    theme("colors.indigo.600"),
+    theme("colors.purple.700"),
+    theme("colors.pink.700")
+  );
+  background-size: 100% 200%;
+
+  &.loading {
+    animation: scrolling;
+  }
+}
+
+.loading + .colored-background::before {
+  animation-duration: 0.75s;
+  opacity: 1 !important;
+}
+
+@keyframes scrolling {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 0% 100%;
+  }
+}

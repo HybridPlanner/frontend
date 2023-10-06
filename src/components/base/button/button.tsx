@@ -5,6 +5,7 @@ import { Link, LinkProps, To } from "react-router-dom";
 
 type BaseButtonProps = {
   icon?: LucideIcon;
+  iconClassName?: string;
   textColor?: string;
   bgColor?: string;
   outlineColor?: string;
@@ -31,6 +32,7 @@ export function Button<T>({
   outlineColor = "outline-blue-600",
   borderColor = "",
   icon: Icon,
+  iconClassName = "",
 
   ...props
 }: ButtonProps) {
@@ -58,7 +60,7 @@ export function Button<T>({
 
     return (
       <Link {...propsAsLink} className={classes}>
-        {Icon && <Icon className="w-6 h-6" />}
+        {Icon && <Icon className={classNames("w-6 h-6", iconClassName)} />}
         {children}
       </Link>
     );
@@ -68,7 +70,7 @@ export function Button<T>({
 
   return (
     <button {...propsAsButton} className={classes}>
-      {Icon && <Icon className="w-6 h-6" />}
+      {Icon && <Icon className={classNames("w-6 h-6", iconClassName)} />}
       {children}
     </button>
   );

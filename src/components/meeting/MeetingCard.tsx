@@ -33,13 +33,14 @@ export function MeetingCard({
       </div>
 
       <div className="col-span-full col-start-2 text-lg font-semibold leading-6 tracking-wide">
-        {meeting.name}
+        {meeting.title}
       </div>
       <div className="col-span-full col-start-2">
         <span
           className={classNames(
-            'before:content-[""] before:rounded-full before:w-2 before:h-2',
-            "bg-blue-100 px-2 py-1 rounded-full text-blue-700"
+            'before:content-[""] before:rounded-full before:w-3 before:h-3 before:bg-blue-500 before:relative',
+            "before:inline-block before:mr-4",
+            "bg-blue-100 px-2 py-1 rounded-full text-blue-700 relative"
           )}
         >
           {formatDate(meeting.start_date, meeting.end_date)}

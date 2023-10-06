@@ -104,10 +104,10 @@ export function MeetingsDashboard(): JSX.Element {
   ];
 
   return (
-    <div className="container px-4 mx-auto flex flex-col gap-3">
+    <div className="container px-4 mx-auto flex flex-col gap-3 min-h-screen">
       <Navbar />
 
-      <div className="mt-28 mx-6 flex flex-col xl:flex-row gap-8">
+      <div className="my-auto mx-6 flex flex-col xl:flex-row gap-8">
         <div className="flex-1">
           <header className="">
             <h1 className="font-bold text-3xl mb-4">Hey Louis 👋</h1>
@@ -185,6 +185,12 @@ export function MeetingsDashboard(): JSX.Element {
         <div className="flex-1 relative">
           <Card icon={<Plus />} title="Plan a meeting" className="h-full">
             <MeetingCreateForm />
+            <div className="absolute w-full h-full top-0 lef-0 right-0 bottom-0 blur-3xl -z-10 flex flex-col opacity-80">
+              <div className="w-full flex-1 bg-blue-400"></div>
+              <div className="w-full flex-1 bg-indigo-600"></div>
+              <div className="w-full flex-1 bg-purple-700"></div>
+              <div className="w-full flex-1 bg-pink-700"></div>
+            </div>
           </Card>
         </div>
       </div>

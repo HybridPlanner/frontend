@@ -9,6 +9,7 @@ import { MeetingCreateForm } from "./CreateForm";
 import { useEffect, useState } from "react";
 import classNames from "classnames";
 import { getFutureMeetings, getPreviousMeetings } from "@/api/meetings";
+import "./dashboard.css";
 
 export function MeetingsDashboard(): JSX.Element {
   const [loading, setLoading] = useState(false);
@@ -110,14 +111,14 @@ export function MeetingsDashboard(): JSX.Element {
       <div className="my-auto mx-6 flex flex-col xl:flex-row gap-8">
         <div className="flex-1">
           <header className="">
-            <h1 className="font-bold text-3xl mb-4">Hey Louis 👋</h1>
+            <h1 className="font-bold text-5xl mb-4">Hey Louis 👋</h1>
             <p>Here are your upcoming meetings.</p>
           </header>
 
           {data !== undefined ? (
             <Card
               icon={<Calendar />}
-              title="Upcoming Meetings"
+              cardTitle="Upcoming Meetings"
               withoutBackground={true}
             >
               <div className="flex flex-col gap-4">
@@ -183,14 +184,9 @@ export function MeetingsDashboard(): JSX.Element {
         </div>
 
         <div className="flex-1 relative">
-          <Card icon={<Plus />} title="Plan a meeting" className="h-full">
+          <Card icon={<Plus />} cardTitle="Plan a meeting" className="h-full">
             <MeetingCreateForm />
-            <div className="absolute w-full h-full top-0 lef-0 right-0 bottom-0 blur-3xl -z-10 flex flex-col opacity-80">
-              <div className="w-full flex-1 bg-blue-400"></div>
-              <div className="w-full flex-1 bg-indigo-600"></div>
-              <div className="w-full flex-1 bg-purple-700"></div>
-              <div className="w-full flex-1 bg-pink-700"></div>
-            </div>
+            <div className="colored-background"></div>
           </Card>
         </div>
       </div>

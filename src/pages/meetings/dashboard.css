@@ -1,0 +1,36 @@
+.colored-background {
+    &::before {
+        @apply absolute w-full h-full top-0 left-0 right-0 bottom-0 blur-3xl -z-10 flex flex-col;
+        @apply animate-[glowing_2s_ease-in-out] content-[''];
+
+        animation: 2s infinite alternate glowing ease-in-out, 5s infinite scrolling linear;
+
+        background-image: linear-gradient(
+            180deg,
+            theme('colors.blue.400'),
+            theme('colors.indigo.600'),
+            theme('colors.purple.700'),
+            theme('colors.pink.700')
+        );
+        background-size: 100% 200%;
+    }
+}
+
+@keyframes glowing {
+    0% {
+        opacity: 0.6;
+    }
+
+    100% {
+        opacity: 0.8;
+    }
+}
+
+@keyframes scrolling {
+    0% {
+        background-position: 0% 0%;
+    }
+    50% {
+        background-position: 0% 100%;
+    }
+}

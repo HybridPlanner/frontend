@@ -27,29 +27,42 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             placeholder={label}
             id={id}
             ref={ref}
+            aria-invalid={!!error ? "true" : "false"}
             className={classNames(
               "transition-all duration-100 ease-in-out",
               "py-2.5 px-3 w-full h-full outline-none border border-gray-300 rounded-lg shadow-xs",
               "disabled:bg-gray-100 disable:text-gray-500",
-              "group-focus-within:border-blue-500  invalid:border-red-500",
 
               "placeholder:text-gray-500 placeholder:transition-all placeholder:duration-100 placeholder:ease-in-out",
               "placeholder-shown:placeholder:opacity-100 placeholder:opacity-0",
+
+              // errors
+              "invalid:border-red-500",
+              error
+                ? "border-red-500 focus:ring-2 ring-red-500 ring-offset-2"
+                : "group-focus-within:border-blue-500",
+
               {
-                "border-red-500 focus:ring-2 ring-red-500 ring-offset-2": error,
                 "pl-10": props.icon,
               }
             )}
           />
 
           <div
-            className="absolute pointer-events-none inset-y-0 left-0 flex items-center pl-3 text-gray-500 group-focus-within:text-blue-500 peer-disabled:text-gray-500"
+            className={classNames(
+              "absolute pointer-events-none inset-y-0 left-0 flex items-center pl-3 text-gray-500 peer-disabled:text-gray-500",
+              error ? "text-red-500" : "group-focus-within:text-blue-500"
+            )}
             aria-hidden="true"
           >
             {props.icon}
           </div>
         </div>
-        {error && <span className="text-sm text-red-500 px-2">{error}</span>}
+        {error && (
+          <span className="text-sm text-red-500 px-2 absolute -bottom-6">
+            {error}
+          </span>
+        )}
       </div>
     );
   }

@@ -14,6 +14,9 @@ import "./dashboard.css";
 export function MeetingsDashboard(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<Meeting[] | undefined>(undefined);
+  const [previousData, setPreviousData] = useState<Meeting[] | undefined>(
+    undefined
+  );
   const [error, setError] = useState<string | undefined>(undefined);
 
   useEffect(() => {
@@ -54,13 +57,14 @@ export function MeetingsDashboard(): JSX.Element {
     setLoading(true);
     try {
       let previous_date: Date;
-      if (!data) {
+      if (!previousData) {
         console.debug("No previous meeting, fetching until now");
         previous_date = new Date();
       } else {
-        const last = data[data?.length - 1];
+        const last = previousData[previousData?.length - 1];
         previous_date = last.start_date;
       }
+
       const meetings = await getPreviousMeetings(previous_date);
       sortMeetings(meetings);
       console.debug(
@@ -68,7 +72,7 @@ export function MeetingsDashboard(): JSX.Element {
         previous_date,
         meetings.length
       );
-      setData([...(data ?? []), ...meetings]);
+      setPreviousData([...(previousData ?? []), ...meetings]);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -84,25 +88,10 @@ export function MeetingsDashboard(): JSX.Element {
     fetchFutureMeetings();
   }, []);
 
-  const now = new Date();
-  const tomorrow = addDays(now, 1);
-
-  const meetings: Meeting[] = [
-    {
-      id: 1,
-      start_date: setTime(now, 10, 30),
-      end_date: setTime(now, 11, 30),
-      name: "Operational team meeting",
-      attendees: ["Louis", "John", "Jane"],
-    },
-    {
-      id: 2,
-      start_date: setTime(tomorrow, 16, 15),
-      end_date: setTime(tomorrow, 16, 30),
-      name: "Sprint planning 2023",
-      attendees: ["Louis", "John", "Jane"],
-    },
-  ];
+  const updateList = async () => {
+    setData(undefined);
+    await fetchFutureMeetings();
+  };
 
   return (
     <div className="container px-4 mx-auto flex flex-col gap-3 min-h-screen">
@@ -129,14 +118,40 @@ export function MeetingsDashboard(): JSX.Element {
                     </p>
                   </div>
                 )}
+
+                <h2 className="uppercase text-blue-600">Planned meetings</h2>
                 {data.length > 0 &&
                   data.map((meeting) => (
                     <MeetingCard
                       className="odd:bg-blue-50 even:bg-gray-50"
                       meeting={meeting}
-                      key={meeting.start_date + "|" + meeting.end_date}
+                      key={
+                        meeting.start_date.getTime() +
+                        "-" +
+                        meeting.end_date.getTime()
+                      }
                     />
                   ))}
+
+                {previousData && previousData.length > 0 && (
+                  <>
+                    <div className="border-b border-gray-300 mt-4"></div>
+
+                    <h2 className="uppercase text-blue-600">Past meetings</h2>
+
+                    {previousData.map((meeting) => (
+                      <MeetingCard
+                        className="odd:bg-blue-50 even:bg-gray-50"
+                        meeting={meeting}
+                        key={
+                          meeting.start_date.getTime() +
+                          "-" +
+                          meeting.end_date.getTime()
+                        }
+                      />
+                    ))}
+                  </>
+                )}
 
                 <div className="relative text-center py-4">
                   <button
@@ -185,7 +200,7 @@ export function MeetingsDashboard(): JSX.Element {
 
         <div className="flex-1 relative">
           <Card icon={<Plus />} cardTitle="Plan a meeting" className="h-full">
-            <MeetingCreateForm />
+            <MeetingCreateForm onFormCreated={updateList} />
             <div className="colored-background"></div>
           </Card>
         </div>

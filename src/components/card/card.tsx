@@ -13,6 +13,7 @@ export function Card({
   className,
   children,
   withoutBackground = false,
+  cardTitle,
   ...props
 }: CardProps): JSX.Element {
   return (
@@ -27,15 +28,13 @@ export function Card({
       )}
     >
       <header className="flex flex-row items-center gap-4 mb-4">
-        {props.cardTitle && props.icon ? (
+        {cardTitle && props.icon ? (
           <span className="bg-[#D1E9FF] text-blue-500 rounded-full inline-block p-2">
             {props.icon}
           </span>
         ) : undefined}
-        {props.cardTitle && (
-          <h1 className="text-2xl font-bold text-blue-500">
-            {props.cardTitle}
-          </h1>
+        {cardTitle && (
+          <h1 className="text-2xl font-bold text-blue-500">{cardTitle}</h1>
         )}
       </header>
       <div className="pb-2">{children}</div>

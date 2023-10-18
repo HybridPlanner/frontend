@@ -35,14 +35,19 @@ export const MeetingDeleteModal = forwardRef<
             formNoValidate
             className="absolute top-8 right-8 btn p-2 rounded-full hover:bg-gray-400 hover:bg-opacity-20"
           >
-            <X />
+            <X className="text-gray-700" />
           </button>
 
           <h1 className="text-blue-600 font-semibold text-2xl">
             Delete <span className="italic">{meeting.title}</span>?
           </h1>
 
-          <menu className="m-4 flex flex-col md:flex-row-reverse gap-3">
+          <p className="m-4 text-gray-700">
+            This action cannot be undone. All the data associated with this
+            meeting will be permanently deleted.
+          </p>
+
+          <menu className="flex flex-col md:flex-row-reverse gap-3">
             <Button
               type="submit"
               className="md:ml-3"

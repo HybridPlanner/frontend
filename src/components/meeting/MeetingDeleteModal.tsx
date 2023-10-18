@@ -1,6 +1,13 @@
 import { Meeting } from "@/types/Meeting";
 import classNames from "classnames";
-import { forwardRef, HTMLAttributes, type ReactElement } from "react";
+import {
+  forwardRef,
+  HTMLAttributes,
+  useCallback,
+  type ReactElement,
+  useRef,
+  useImperativeHandle,
+} from "react";
 import { Button } from "../base/button/button";
 import { X } from "lucide-react";
 import { MeetingDateBadge } from "./MeetingDateBadge";
@@ -14,13 +21,26 @@ export const MeetingDeleteModal = forwardRef<
   HTMLDialogElement,
   MeetingInfoModalProps
 >(({ meeting, className, onDelete, ...props }, ref) => {
+  const modalRef = useRef<HTMLDialogElement>(null);
+
+  const onClose = useCallback(() => {
+    if (!meeting || !modalRef.current) return;
+
+    if (modalRef.current.returnValue === "delete") {
+      onDelete(meeting);
+    }
+  }, [meeting]);
+
+  useImperativeHandle(ref, () => modalRef.current as HTMLDialogElement);
+
   return (
     <dialog
-      ref={ref}
+      ref={modalRef}
       {...props}
+      onClose={onClose}
       className={classNames(
         className,
-        "open:backdrop-blur-lg open:backdrop:fill-gray-800",
+        "backdrop-blur-lg",
         "invisible opacity-0 open:visible open:opacity-100 open:transition-all open:duration-100 ease-out",
         "scale-50 open:scale-100",
         "bg-transparent top-0 left-0 fixed w-full md:max-w-screen-sm z-50 p-8 md:flex md:flex-col md:justify-center",
@@ -28,7 +48,7 @@ export const MeetingDeleteModal = forwardRef<
       )}
     >
       {meeting && (
-        <form method="dialog" onSubmit={() => onDelete?.(meeting)}>
+        <form method="dialog">
           <button
             id="close"
             aria-label="close"
@@ -53,6 +73,7 @@ export const MeetingDeleteModal = forwardRef<
               className="md:ml-3"
               bgColor="bg-red-500 hover:bg-red-600"
               outlineColor="outline-red-500"
+              value="delete"
             >
               Delete
             </Button>

@@ -26,6 +26,7 @@ export function MeetingCreateForm({
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors, isValid },
     watch,
   } = useForm<FormInputs>({
@@ -38,12 +39,16 @@ export function MeetingCreateForm({
 
     await createMeeting({
       title: data.title,
+      description: data.description,
       start_date: new Date(data.start_date),
       end_date: new Date(data.end_date),
       attendees: [],
     });
 
     await onFormCreated?.();
+
+    // Clear form
+    reset();
 
     setLoading(false);
   };

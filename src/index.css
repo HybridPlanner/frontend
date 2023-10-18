@@ -11,6 +11,6 @@ html, body {
     @apply min-h-screen;
 }
 
-*:focus-within {
+* {
     @apply outline-blue-500 outline-2 outline-offset-2;
 }

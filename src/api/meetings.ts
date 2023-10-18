@@ -33,11 +33,11 @@ export async function createMeeting(
   return response.data;
 }
 
-export async function deleteMeeting(id: string): Promise<void> {
+export async function deleteMeeting(id: number): Promise<void> {
   await apiClient.delete(`/meetings/${id}`);
 }
 
-export async function getMeeting(id: string): Promise<Meeting> {
+export async function getMeeting(id: number): Promise<Meeting> {
   const response = await apiClient.get<Meeting>(`/meetings/${id}`);
   
   response.data.start_date = new Date(response.data.start_date);

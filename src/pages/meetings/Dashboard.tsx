@@ -8,9 +8,14 @@ import { Meeting } from "@/types/Meeting";
 import { MeetingCreateForm } from "./CreateForm";
 import { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
-import { getFutureMeetings, getPreviousMeetings } from "@/api/meetings";
+import {
+  deleteMeeting,
+  getFutureMeetings,
+  getPreviousMeetings,
+} from "@/api/meetings";
 import "./dashboard.css";
 import { MeetingInfoModal } from "@/components/meeting/MeetingInfoModal";
+import { MeetingDeleteModal } from "@/components/meeting/MeetingDeleteModal";
 
 export function MeetingsDashboard(): JSX.Element {
   const [loading, setLoading] = useState(false);
@@ -20,8 +25,11 @@ export function MeetingsDashboard(): JSX.Element {
   );
   const [error, setError] = useState<string | undefined>(undefined);
 
-  const [modalMeeting, setModalMeeting] = useState<Meeting | undefined>(undefined)
+  const [modalMeeting, setModalMeeting] = useState<Meeting | undefined>(
+    undefined
+  );
   const showMeetingModalRef = useRef<HTMLDialogElement>(null);
+  const deleteMeetingModalRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
     let timeout: number;
@@ -97,16 +105,27 @@ export function MeetingsDashboard(): JSX.Element {
     await fetchFutureMeetings();
   };
 
-  const showMeetingModal = (meeting: Meeting, action: 'show'|'edit'|'delete') => {
-    if (action === 'show') {
-      console.debug('Show meeting %O', meeting);
+  const showMeetingModal = (
+    meeting: Meeting,
+    action: "show" | "edit" | "delete"
+  ) => {
+    if (action === "show") {
+      console.debug("Show meeting %O", meeting);
       setModalMeeting(meeting);
       showMeetingModalRef.current?.showModal();
+    } else if (action === "delete") {
+      console.debug("Delete meeting %O", meeting);
+      setModalMeeting(meeting);
+      deleteMeetingModalRef.current?.showModal();
     }
-  }
+  };
 
   return (
-    <div className={classNames('container px-4 mx-auto flex flex-col gap-3 min-h-screen')}>
+    <div
+      className={classNames(
+        "container px-4 mx-auto flex flex-col gap-3 min-h-screen"
+      )}
+    >
       <Navbar />
 
       <div className="my-auto mx-6 py-8 flex flex-col xl:flex-row gap-16">
@@ -138,7 +157,8 @@ export function MeetingsDashboard(): JSX.Element {
                     <MeetingCard
                       className="odd:bg-blue-50 even:bg-gray-50"
                       meeting={meeting}
-                      onOpenMeeting={(m)=>showMeetingModal(m, 'show')}
+                      onOpenMeeting={(m) => showMeetingModal(m, "show")}
+                      onDeleteMeeting={(m) => showMeetingModal(m, "delete")}
                       key={
                         meeting.start_date.getTime() +
                         "-" +
@@ -158,7 +178,7 @@ export function MeetingsDashboard(): JSX.Element {
                         className="odd:bg-blue-50 even:bg-gray-50"
                         meeting={meeting}
                         isPrevious={true}
-                        onOpenMeeting={(m)=>showMeetingModal(m, 'show')}
+                        onOpenMeeting={(m) => showMeetingModal(m, "show")}
                         key={
                           meeting.start_date.getTime() +
                           "-" +
@@ -214,6 +234,14 @@ export function MeetingsDashboard(): JSX.Element {
           )}
 
           <MeetingInfoModal ref={showMeetingModalRef} meeting={modalMeeting} />
+          <MeetingDeleteModal
+            ref={deleteMeetingModalRef}
+            meeting={modalMeeting}
+            onDelete={async (meeting) => {
+              await deleteMeeting(meeting.id);
+              await fetchFutureMeetings();
+            }}
+          />
         </div>
 
         <div className="flex-1 relative">

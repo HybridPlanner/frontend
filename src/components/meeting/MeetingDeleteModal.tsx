@@ -7,12 +7,13 @@ import { MeetingDateBadge } from "./MeetingDateBadge";
 
 type MeetingInfoModalProps = {
   meeting: Meeting | undefined;
+  onDelete: (meeting: Meeting) => void;
 } & HTMLAttributes<HTMLDialogElement>;
 
-export const MeetingInfoModal = forwardRef<
+export const MeetingDeleteModal = forwardRef<
   HTMLDialogElement,
   MeetingInfoModalProps
->(({ meeting, className, ...props }, ref) => {
+>(({ meeting, className, onDelete, ...props }, ref) => {
   return (
     <dialog
       ref={ref}
@@ -27,7 +28,7 @@ export const MeetingInfoModal = forwardRef<
       )}
     >
       {meeting && (
-        <form method="dialog">
+        <form method="dialog" onSubmit={() => onDelete?.(meeting)}>
           <button
             id="close"
             aria-label="close"
@@ -38,20 +39,27 @@ export const MeetingInfoModal = forwardRef<
           </button>
 
           <h1 className="text-blue-600 font-semibold text-2xl">
-            {meeting.title}
+            Delete <span className="italic">{meeting.title}</span>?
           </h1>
 
-          <div className="m-4">
-            <MeetingDateBadge meeting={meeting} className="mb-4 inline-block" />
+          <menu className="m-4 flex flex-col md:flex-row-reverse gap-3">
+            <Button
+              type="submit"
+              className="md:ml-3"
+              bgColor="bg-red-500 hover:bg-red-600"
+              outlineColor="outline-red-500"
+            >
+              Delete
+            </Button>
 
-            <div className="flex flex-col-reverse md:flex-row">
-              <div className="flex-1">
-                <p>{meeting.description}</p>
-              </div>
-
-              <aside className="w-full md:w-52"></aside>
-            </div>
-          </div>
+            <Button
+              formNoValidate
+              bgColor="bg-transparent hover:bg-gray-400 focus-within:bg-gray-400 hover:bg-opacity-30 focus-within:bg-opacity-30"
+              textColor="text-gray-600"
+            >
+              Cancel
+            </Button>
+          </menu>
         </form>
       )}
     </dialog>

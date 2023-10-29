@@ -115,7 +115,7 @@ export function MeetingsDashboard(): JSX.Element {
                 {data.length === 0 && (
                   <div className="text-center p-8">
                     <p className="text-gray-500">
-                      There is no meetings planned for now...
+                      There are no meetings planned for now...
                     </p>
                   </div>
                 )}
@@ -126,11 +126,7 @@ export function MeetingsDashboard(): JSX.Element {
                     <MeetingCard
                       className="odd:bg-blue-50 even:bg-gray-50"
                       meeting={meeting}
-                      key={
-                        meeting.start_date.getTime() +
-                        "-" +
-                        meeting.end_date.getTime()
-                      }
+                      key={meeting.id}
                     />
                   ))}
 
@@ -144,11 +140,7 @@ export function MeetingsDashboard(): JSX.Element {
                       <MeetingCard
                         className="odd:bg-blue-50 even:bg-gray-50"
                         meeting={meeting}
-                        key={
-                          meeting.start_date.getTime() +
-                          "-" +
-                          meeting.end_date.getTime()
-                        }
+                        key={meeting.id}
                       />
                     ))}
                   </>

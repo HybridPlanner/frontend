@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { type LucideIcon } from "lucide-react";
-import { ReactElement, forwardRef } from "react";
+import { forwardRef } from "react";
 
 type TitleProps = {
   icon?: LucideIcon;

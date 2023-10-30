@@ -24,7 +24,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         <div className="relative group">
           <input
             {...props}
-            placeholder={label}
+            placeholder={props.placeholder || label}
             id={id}
             ref={ref}
             aria-invalid={!!error ? "true" : "false"}

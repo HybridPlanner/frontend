@@ -146,7 +146,7 @@ export function MeetingsDashboard(): JSX.Element {
                 {data.length === 0 && (
                   <div className="text-center p-8">
                     <p className="text-gray-500">
-                      There is no meetings planned for now...
+                      There are no meetings planned for now...
                     </p>
                   </div>
                 )}
@@ -159,11 +159,7 @@ export function MeetingsDashboard(): JSX.Element {
                       meeting={meeting}
                       onOpenMeeting={(m) => showMeetingModal(m, "show")}
                       onDeleteMeeting={(m) => showMeetingModal(m, "delete")}
-                      key={
-                        meeting.start_date.getTime() +
-                        "-" +
-                        meeting.end_date.getTime()
-                      }
+                      key={meeting.id}
                     />
                   ))}
 
@@ -179,11 +175,7 @@ export function MeetingsDashboard(): JSX.Element {
                         meeting={meeting}
                         isPrevious={true}
                         onOpenMeeting={(m) => showMeetingModal(m, "show")}
-                        key={
-                          meeting.start_date.getTime() +
-                          "-" +
-                          meeting.end_date.getTime()
-                        }
+                        key={meeting.id}
                       />
                     ))}
                   </>

@@ -29,20 +29,22 @@ export function MeetingCreateForm({
     reset,
     formState: { errors, isValid },
     watch,
+    trigger,
   } = useForm<FormInputs>({
     mode: "all",
   });
   const [loading, setLoading] = useState(false);
+  const startDate = watch("start_date", "Invalid Date");
+  const now = new Date();
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setLoading(true);
 
     await createMeeting({
-      title: data.title,
-      description: data.description,
+      ...data,
       start_date: new Date(data.start_date),
       end_date: new Date(data.end_date),
-      attendees: [],
+      attendees: data.attendees?.split(",") || [],
     });
 
     await onFormCreated?.();
@@ -70,21 +72,12 @@ export function MeetingCreateForm({
           type="datetime-local"
           icon={<Calendar className="w-5 h-5" />}
           error={errors.start_date?.message}
-          min={new Date().toISOString().slice(0, 16)}
+          min={now.toISOString().slice(0, 16)}
           {...register("start_date", {
             valueAsDate: true,
             required: "Start date is required",
-            validate: {
-              date: (value) => {
-                try {
-                  const startDate = new Date(value);
-                  if (!isAfter(startDate, new Date())) {
-                    return "Start date can't be in the past";
-                  }
-                } catch (error) {}
-                return true;
-              },
-            },
+            validate: value => isAfter(new Date(value), now) || "Start date can't be in the past.",
+            onChange: () => trigger(), // Trigger every field validation when to force end_date validation and re-render
           })}
         />
 
@@ -94,33 +87,28 @@ export function MeetingCreateForm({
           type="datetime-local"
           icon={<Calendar className="w-5 h-5" />}
           error={errors.end_date?.message}
-          min={watch("start_date")}
+          min={(startDate == "Invalid Date" ? now : new Date(startDate)).toISOString().slice(0, 16)}
           {...register("end_date", {
             valueAsDate: true,
-            required: "End date is required",
-            validate: {
-              date: (value) => {
-                try {
-                  const startDate = new Date(watch("start_date"));
-                  const endDate = new Date(value);
-                  if (!isAfter(endDate, startDate)) {
-                    return "End date must be after start date";
-                  }
-                } catch (error) {}
-                return true;
-              },
-            },
+            required: "End date is required.",
+            validate: value => isAfter(new Date(value), new Date(startDate)) || "End date must be after start date.",
           })}
         />
       </div>
 
       <div className="flex flex-row gap-4 w-full">
         <Input
-          id="invitees"
-          name="invitees"
-          label="Invitees"
+          id="attendees"
+          label="Attendees"
+          type="email"
           icon={<Pencil className="w-5 h-5" />}
+          multiple
+          placeholder="Enter attendees emails, separated by a comma."
           className="w-full"
+          error={errors.attendees?.message}
+          {...register("attendees", {
+            required: "There must be at least one attendee.",
+          })}
         />
       </div>
 

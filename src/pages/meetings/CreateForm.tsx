@@ -26,6 +26,7 @@ export function MeetingCreateForm({
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors, isValid },
     watch,
     trigger,
@@ -47,6 +48,9 @@ export function MeetingCreateForm({
     });
 
     await onFormCreated?.();
+
+    // Clear form
+    reset();
 
     setLoading(false);
   };

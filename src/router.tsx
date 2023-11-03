@@ -3,6 +3,7 @@ import App from "./App";
 import ErrorPage from "./pages/Error";
 import HomePage from "./pages/Home";
 import { MeetingsDashboard } from "./pages/meetings/Dashboard";
+import { MeetingPage } from "./pages/meetings/MeetingPage";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <MeetingsDashboard />,
+      },
+      {
+        path: "/meeting/:id",
+        element: <MeetingPage />,
       },
     ],
   },

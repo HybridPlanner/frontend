@@ -18,7 +18,6 @@ export function MeetingPage({}): JSX.Element {
 
       try {
         const meeting = await getMeeting(meetingId);
-        console.log("get meeting", meeting);
         setMeeting(meeting);
       } catch (error) {
         setError(error as Error);
@@ -42,7 +41,7 @@ export function MeetingPage({}): JSX.Element {
     }
 
     return meeting.start_date > new Date() ? (
-      <MeetingWaiting />
+      <MeetingWaiting meeting={meeting} />
     ) : (
       <MeetingJoin />
     );
@@ -56,7 +55,7 @@ export function MeetingPage({}): JSX.Element {
     >
       <Navbar />
 
-      {getContent()}
+      <div className="my-auto">{getContent()}</div>
     </div>
   );
 }

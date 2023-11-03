@@ -1,6 +1,7 @@
 import { createMeeting } from "@/api/meetings";
 import { Button } from "@/components/base/button/button";
 import { Input } from "@/components/form/input/input";
+import { InputTags } from "@/components/form/inputTags/inputTags";
 import { Textarea } from "@/components/form/textarea/textarea";
 import classNames from "classnames";
 import { isAfter } from "date-fns";
@@ -76,7 +77,9 @@ export function MeetingCreateForm({
           {...register("start_date", {
             valueAsDate: true,
             required: "Start date is required",
-            validate: value => isAfter(new Date(value), now) || "Start date can't be in the past.",
+            validate: (value) =>
+              isAfter(new Date(value), now) ||
+              "Start date can't be in the past.",
             onChange: () => trigger(), // Trigger every field validation when to force end_date validation and re-render
           })}
         />
@@ -87,22 +90,24 @@ export function MeetingCreateForm({
           type="datetime-local"
           icon={<Calendar className="w-5 h-5" />}
           error={errors.end_date?.message}
-          min={(startDate == "Invalid Date" ? now : new Date(startDate)).toISOString().slice(0, 16)}
+          min={(startDate == "Invalid Date" ? now : new Date(startDate))
+            .toISOString()
+            .slice(0, 16)}
           {...register("end_date", {
             valueAsDate: true,
             required: "End date is required.",
-            validate: value => isAfter(new Date(value), new Date(startDate)) || "End date must be after start date.",
+            validate: (value) =>
+              isAfter(new Date(value), new Date(startDate)) ||
+              "End date must be after start date.",
           })}
         />
       </div>
 
       <div className="flex flex-row gap-4 w-full">
-        <Input
+        <InputTags
           id="attendees"
           label="Attendees"
-          type="email"
           icon={<Pencil className="w-5 h-5" />}
-          multiple
           placeholder="Enter attendees emails, separated by a comma."
           className="w-full"
           error={errors.attendees?.message}

@@ -1,0 +1,10 @@
+.inputTags {
+  [data-placeholder="true"] {
+    @apply text-gray-500 transition-all duration-100 ease-in-out;
+    @apply hidden absolute top-2.5;
+  }
+
+  &.empty [data-placeholder="true"] {
+    @apply block;
+  }
+}

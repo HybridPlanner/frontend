@@ -151,17 +151,22 @@ export function MeetingsDashboard(): JSX.Element {
                   </div>
                 )}
 
-                <h2 className="uppercase text-blue-600">Planned meetings</h2>
-                {data.length > 0 &&
-                  data.map((meeting) => (
-                    <MeetingCard
-                      className="odd:bg-blue-50 even:bg-gray-50"
-                      meeting={meeting}
-                      onOpenMeeting={(m) => showMeetingModal(m, "show")}
-                      onDeleteMeeting={(m) => showMeetingModal(m, "delete")}
-                      key={meeting.id}
-                    />
-                  ))}
+                {data.length > 0 && (
+                  <>
+                    <h2 className="uppercase text-blue-600">
+                      Planned meetings
+                    </h2>
+                    {data.map((meeting) => (
+                      <MeetingCard
+                        className="odd:bg-blue-50 even:bg-gray-50"
+                        meeting={meeting}
+                        onOpenMeeting={(m) => showMeetingModal(m, "show")}
+                        onDeleteMeeting={(m) => showMeetingModal(m, "delete")}
+                        key={meeting.id}
+                      />
+                    ))}
+                  </>
+                )}
 
                 {previousData && previousData.length > 0 && (
                   <>

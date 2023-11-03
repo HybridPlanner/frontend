@@ -131,7 +131,7 @@ export function MeetingsDashboard(): JSX.Element {
       <div className="my-auto mx-6 py-8 flex flex-col xl:flex-row gap-16">
         <div className="flex-1">
           <header>
-            <h1 className="font-bold text-5xl mb-4">Hey Louis 👋</h1>
+            <h1 className="font-bold text-5xl mb-4 tracking-tight">Hey 👋</h1>
             <p>Here are your upcoming meetings.</p>
           </header>
 
@@ -153,12 +153,9 @@ export function MeetingsDashboard(): JSX.Element {
 
                 {data.length > 0 && (
                   <>
-                    <h2 className="uppercase text-blue-600">
-                      Planned meetings
-                    </h2>
                     {data.map((meeting) => (
                       <MeetingCard
-                        className="odd:bg-blue-50 even:bg-gray-50"
+                        className="odd:bg-blue-50/20 even:bg-gray-50/20"
                         meeting={meeting}
                         onOpenMeeting={(m) => showMeetingModal(m, "show")}
                         onDeleteMeeting={(m) => showMeetingModal(m, "delete")}

@@ -16,7 +16,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={id}
-            className="font-semibold text-gray-700 text-sm group-focus-within:text-blue-500"
+            className="font-semibold text-gray-700 text-sm group-focus-within:text-blue-500 leading-8"
           >
             {label}
           </label>

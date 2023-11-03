@@ -1,6 +1,5 @@
+import { ErrorComponent } from "@/components/ErrorComponent";
+
 export default function ErrorPage() {
-    return <div className="container px-4 mx-auto">
-        <p>404 Not Found</p>
-        <a href="/">Back</a>
-    </div>
+  return <ErrorComponent error={new Error("404 Not found")} />;
 }

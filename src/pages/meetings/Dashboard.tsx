@@ -191,7 +191,7 @@ export function MeetingsDashboard(): JSX.Element {
                       loading
                         ? "text-blue-400"
                         : "text-blue-700 hover:text-blue-500",
-                      "transition-colors duration-100 ease-in-out font-semibold inline-flex gap-2 items-end"
+                      "transition-colors duration-100 font-semibold inline-flex gap-2 items-end"
                     )}
                     onClick={fetchPreviousMeetings}
                   >

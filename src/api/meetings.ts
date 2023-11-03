@@ -39,7 +39,9 @@ export async function deleteMeeting(id: number): Promise<void> {
 
 export async function getMeeting(id: number): Promise<Meeting> {
   const response = await apiClient.get<Meeting>(`/meetings/${id}`);
-  
+
+  if (!response.data || !response.data.id) throw new Error("Invalid data");
+
   response.data.start_date = new Date(response.data.start_date);
   response.data.end_date = new Date(response.data.end_date);
 

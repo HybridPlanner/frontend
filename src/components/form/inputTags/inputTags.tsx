@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { LucideIcon } from "lucide-react";
 import { ReactElement, forwardRef } from "react";
 
-import { ChangeHandler } from "react-hook-form";
+import { ChangeHandler, Controller } from "react-hook-form";
 import { ReactMultiEmail } from "react-multi-email";
 import { TagElement } from "./Tag";
 import "./inputTag.css";
@@ -12,10 +12,13 @@ export type InputTagsProps = {
   label?: string;
   icon?: ReactElement<LucideIcon>;
   error?: string;
-  onChange: ChangeHandler;
   suggestions?: string[];
+  placeholder: string;
+  className?: string;
   disabled?: boolean;
-} & React.InputHTMLAttributes<HTMLInputElement>;
+  value?: string[];
+  onChange?: (emails: string[]) => void;
+};
 
 export const InputTags = forwardRef<HTMLDivElement, InputTagsProps>(
   (
@@ -52,6 +55,8 @@ export const InputTags = forwardRef<HTMLDivElement, InputTagsProps>(
             placeholder={props.placeholder || label}
             id={id}
             aria-invalid={!!error ? "true" : "false"}
+            onChange={props.onChange}
+            emails={props.value}
             getLabel={(email, index, removeEmail) => (
               <TagElement
                 key={index}

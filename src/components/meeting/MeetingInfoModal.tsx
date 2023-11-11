@@ -13,13 +13,14 @@ export const MeetingInfoModal = forwardRef<
   HTMLDialogElement,
   MeetingInfoModalProps
 >(({ meeting, className, ...props }, ref) => {
+  console.log(meeting);
   return (
     <dialog
       ref={ref}
       {...props}
       className={classNames(
         className,
-        "open:backdrop-blur-lg open:backdrop:fill-gray-800",
+        "backdrop:bg-gray-800/50",
         "invisible opacity-0 open:visible open:opacity-100 open:transition-all open:duration-100 ease-out",
         "scale-50 open:scale-100",
         "bg-transparent top-0 left-0 fixed w-full md:max-w-screen-sm z-50 p-8 md:flex md:flex-col md:justify-center",
@@ -47,9 +48,27 @@ export const MeetingInfoModal = forwardRef<
             <div className="flex flex-col-reverse md:flex-row">
               <div className="flex-1">
                 <p>{meeting.description}</p>
+
+                <div className="my-4">
+                  <h2 className="font-semibold mb-2">Attendees</h2>
+                  {/* Attendees list */}
+                  <ul className="flex flex-wrap">
+                    {meeting.attendees.map((attendee) => (
+                      <li
+                        key={attendee.id}
+                        className={classNames(
+                          "bg-purple-300 text-purple-800 bg-opacity-50 rounded-full px-4",
+                          "before:rounded-full"
+                        )}
+                      >
+                        {attendee.email}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
 
-              <aside className="w-full md:w-52"></aside>
+              <aside className="w-full md:w-52">{/* Meeting actions */}</aside>
             </div>
           </div>
         </form>

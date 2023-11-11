@@ -131,7 +131,7 @@ export function MeetingsDashboard(): JSX.Element {
       <div className="my-auto mx-6 py-8 flex flex-col xl:flex-row gap-16">
         <div className="flex-1">
           <header>
-            <h1 className="font-bold text-5xl mb-4">Hey Louis 👋</h1>
+            <h1 className="font-bold text-5xl mb-4 tracking-tight">Hey 👋</h1>
             <p>Here are your upcoming meetings.</p>
           </header>
 
@@ -151,17 +151,19 @@ export function MeetingsDashboard(): JSX.Element {
                   </div>
                 )}
 
-                <h2 className="uppercase text-blue-600">Planned meetings</h2>
-                {data.length > 0 &&
-                  data.map((meeting) => (
-                    <MeetingCard
-                      className="odd:bg-blue-50 even:bg-gray-50"
-                      meeting={meeting}
-                      onOpenMeeting={(m) => showMeetingModal(m, "show")}
-                      onDeleteMeeting={(m) => showMeetingModal(m, "delete")}
-                      key={meeting.id}
-                    />
-                  ))}
+                {data.length > 0 && (
+                  <>
+                    {data.map((meeting) => (
+                      <MeetingCard
+                        className="odd:bg-blue-50/20 even:bg-gray-50/20"
+                        meeting={meeting}
+                        onOpenMeeting={(m) => showMeetingModal(m, "show")}
+                        onDeleteMeeting={(m) => showMeetingModal(m, "delete")}
+                        key={meeting.id}
+                      />
+                    ))}
+                  </>
+                )}
 
                 {previousData && previousData.length > 0 && (
                   <>
@@ -189,7 +191,7 @@ export function MeetingsDashboard(): JSX.Element {
                       loading
                         ? "text-blue-400"
                         : "text-blue-700 hover:text-blue-500",
-                      "transition-colors duration-100 ease-in-out font-semibold inline-flex gap-2 items-end"
+                      "transition-colors duration-100 font-semibold inline-flex gap-2 items-end"
                     )}
                     onClick={fetchPreviousMeetings}
                   >

@@ -16,9 +16,9 @@ export function MeetingDateBadge({
     <span
       className={classNames(
         className,
-        'before:content-[""] before:rounded-full before:w-3 before:h-3 before:bg-blue-500 before:relative',
-        "before:inline-block before:mr-4",
-        "bg-blue-100 px-2 py-1 rounded-full text-blue-700 relative"
+        'before:content-[""] before:rounded-full before:w-2 before:h-2 before:bg-blue-500 before:relative',
+        "before:inline-block before:mr-2",
+        "bg-blue-100 px-3 py-1 rounded-full text-blue-700 relative font-medium"
       )}
     >
       {formatDate(meeting.start_date, meeting.end_date)}

@@ -37,7 +37,7 @@ export function Button<T>({
   ...props
 }: ButtonProps) {
   const classes = classNames(
-    "px-4 py-2.5 rounded-lg motion-safe:transition-all duration-150 ease-in-out",
+    "px-4 py-2 rounded-lg motion-safe:transition-all duration-150",
     "outline-offset-2 outline-2 focus:outline",
 
     "disabled:cursor-not-allowed disabled:opacity-75",

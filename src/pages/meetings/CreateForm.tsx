@@ -80,7 +80,7 @@ export function MeetingCreateForm({
         {...register("title", { required: "Meeting name is required" })}
       />
 
-      <div className="flex flex-row gap-4">
+      <div className="grid lg:grid-cols-2 lg:gap-4">
         <Input
           id="start_date"
           label="Start date"

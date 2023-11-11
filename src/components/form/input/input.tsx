@@ -16,7 +16,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={id}
-            className="font-semibold text-gray-700 text-sm group-focus-within:text-blue-500"
+            className="font-semibold text-gray-700 text-sm group-focus-within:text-blue-500 leading-8"
           >
             {label}
           </label>
@@ -29,11 +29,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             aria-invalid={!!error ? "true" : "false"}
             className={classNames(
-              "transition-all duration-100 ease-in-out",
+              "transition-all duration-100",
               "py-2.5 px-3 w-full h-full outline-none border border-gray-300 rounded-lg shadow-xs",
               "disabled:bg-gray-100 disable:text-gray-500",
 
-              "placeholder:text-gray-500 placeholder:transition-all placeholder:duration-100 placeholder:ease-in-out",
+              "placeholder:text-gray-500 placeholder:transition-all placeholder:duration-100",
               "placeholder-shown:placeholder:opacity-100 placeholder:opacity-0",
 
               // errors

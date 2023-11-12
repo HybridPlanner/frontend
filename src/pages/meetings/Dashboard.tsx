@@ -11,6 +11,7 @@ import classNames from "classnames";
 import {
   deleteMeeting,
   getFutureMeetings,
+  getMeeting,
   getPreviousMeetings,
 } from "@/api/meetings";
 import "./dashboard.css";
@@ -105,13 +106,15 @@ export function MeetingsDashboard(): JSX.Element {
     await fetchFutureMeetings();
   };
 
-  const showMeetingModal = (
+  const showMeetingModal = async (
     meeting: Meeting,
     action: "show" | "edit" | "delete"
   ) => {
     if (action === "show") {
-      console.debug("Show meeting %O", meeting);
-      setModalMeeting(meeting);
+      // Fetch meeting data
+      const meetingData = await getMeeting(meeting.id);
+      console.debug("Show meeting %O", meetingData);
+      setModalMeeting(meetingData);
       showMeetingModalRef.current?.showModal();
     } else if (action === "delete") {
       console.debug("Delete meeting %O", meeting);

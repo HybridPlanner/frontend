@@ -4,7 +4,7 @@ export interface Meeting {
   description?: string;
   start_date: Date;
   end_date: Date;
-  attendees: string[];
+  attendees: { id: number; email: string }[];
 }
 
 export interface CreateMeetingInput {

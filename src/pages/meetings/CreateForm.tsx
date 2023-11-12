@@ -1,6 +1,7 @@
 import { createMeeting } from "@/api/meetings";
 import { Button } from "@/components/base/button/button";
 import { Input } from "@/components/form/input/input";
+import { InputTags } from "@/components/form/inputTags/inputTags";
 import { Textarea } from "@/components/form/textarea/textarea";
 import classNames from "classnames";
 import { isAfter } from "date-fns";
@@ -12,7 +13,7 @@ interface FormInputs {
   title: string;
   start_date: string;
   end_date: string;
-  attendees: string;
+  attendees: string[];
   description: string;
 }
 
@@ -30,9 +31,23 @@ export function MeetingCreateForm({
     formState: { errors, isValid },
     watch,
     trigger,
+    setValue,
   } = useForm<FormInputs>({
     mode: "all",
+    defaultValues: {
+      start_date: new Date().toISOString().slice(0, 16),
+      end_date: new Date().toISOString().slice(0, 16),
+      attendees: [],
+    },
   });
+
+  // Since react-multi-email isn't compatible with react-hook-form, we need to
+  // register the input manually
+  register("attendees", {
+    required: "There must be at least one attendee.",
+    value: [],
+  });
+
   const [loading, setLoading] = useState(false);
   const startDate = watch("start_date", "Invalid Date");
   const now = new Date();
@@ -44,7 +59,7 @@ export function MeetingCreateForm({
       ...data,
       start_date: new Date(data.start_date),
       end_date: new Date(data.end_date),
-      attendees: data.attendees?.split(",") || [],
+      attendees: data.attendees || [],
     });
 
     await onFormCreated?.();
@@ -103,18 +118,17 @@ export function MeetingCreateForm({
       </div>
 
       <div className="flex flex-row gap-4 w-full">
-        <Input
+        <InputTags
           id="attendees"
           label="Attendees"
-          type="email"
           icon={<Pencil className="w-5 h-5" />}
-          multiple
           placeholder="Enter attendees emails, separated by a comma."
           className="w-full"
           error={errors.attendees?.message}
-          {...register("attendees", {
-            required: "There must be at least one attendee.",
-          })}
+          value={watch("attendees")}
+          onChange={(emails: string[]) => {
+            setValue("attendees", emails, { shouldValidate: true });
+          }}
         />
       </div>
 

@@ -110,15 +110,15 @@ export function MeetingsDashboard(): JSX.Element {
     meeting: Meeting,
     action: "show" | "edit" | "delete"
   ) => {
+    const meetingData = await getMeeting(meeting.id);
     if (action === "show") {
       // Fetch meeting data
-      const meetingData = await getMeeting(meeting.id);
       console.debug("Show meeting %O", meetingData);
       setModalMeeting(meetingData);
       showMeetingModalRef.current?.showModal();
     } else if (action === "delete") {
       console.debug("Delete meeting %O", meeting);
-      setModalMeeting(meeting);
+      setModalMeeting(meetingData);
       deleteMeetingModalRef.current?.showModal();
     }
   };

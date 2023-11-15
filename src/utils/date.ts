@@ -35,6 +35,10 @@ startFormat += format(start, "HH:mm") + " to " + endFormat;
 return startFormat;
 }
 
+export function formatDatetimeToInputValue(date: Date): string {
+    return format(date, "yyyy-MM-dd'T'HH:mm");
+}
+
 export function sortMeetings(meetings: Meeting[]) {
     meetings.sort((m1, m2) => {
         // If m1 start date is before m2 start date, return -1

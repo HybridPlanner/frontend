@@ -13,7 +13,6 @@ export const MeetingInfoModal = forwardRef<
   HTMLDialogElement,
   MeetingInfoModalProps
 >(({ meeting, className, ...props }, ref) => {
-  console.log(meeting);
   return (
     <dialog
       ref={ref}

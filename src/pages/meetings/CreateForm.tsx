@@ -3,11 +3,14 @@ import { Button } from "@/components/base/button/button";
 import { Input } from "@/components/form/input/input";
 import { InputTags } from "@/components/form/inputTags/inputTags";
 import { Textarea } from "@/components/form/textarea/textarea";
+import { formatDatetimeToInputValue as dateForInput } from "@/utils/date";
 import classNames from "classnames";
-import { isAfter } from "date-fns";
+import { isAfter, addMinutes } from "date-fns";
 import { Edit3, Calendar, Pencil, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+
+const END_DATE_LIMIT = 5;
 
 interface FormInputs {
   title: string;
@@ -35,8 +38,8 @@ export function MeetingCreateForm({
   } = useForm<FormInputs>({
     mode: "all",
     defaultValues: {
-      start_date: new Date().toISOString().slice(0, 16),
-      end_date: new Date().toISOString().slice(0, 16),
+      start_date: dateForInput(new Date()),
+      end_date: dateForInput(addMinutes(new Date(), END_DATE_LIMIT)),
       attendees: [],
     },
   });
@@ -50,6 +53,7 @@ export function MeetingCreateForm({
 
   const [loading, setLoading] = useState(false);
   const startDate = watch("start_date", "Invalid Date");
+  const endDate = watch("end_date", "Invalid Date");
   const now = new Date();
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
@@ -70,6 +74,20 @@ export function MeetingCreateForm({
     setLoading(false);
   };
 
+  useEffect(() => {
+    if (startDate === "Invalid Date" || endDate === "Invalid Date") return;
+
+    // Update the "end_date" value only if it is behind the start date
+    const minimalEnd = addMinutes(new Date(startDate), END_DATE_LIMIT);
+    
+    // If the minimal date is after the current end date, update it
+    if (!isAfter(minimalEnd, new Date(endDate))) return;
+
+    setValue("end_date", dateForInput(minimalEnd), {
+      shouldValidate: true,
+    });
+  }, [startDate, endDate]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classNames({ loading })}>
       <Input
@@ -87,7 +105,7 @@ export function MeetingCreateForm({
           type="datetime-local"
           icon={<Calendar className="w-5 h-5" />}
           error={errors.start_date?.message}
-          min={now.toISOString().slice(0, 16)}
+          min={dateForInput(now)}
           {...register("start_date", {
             valueAsDate: true,
             required: "Start date is required",
@@ -104,9 +122,7 @@ export function MeetingCreateForm({
           type="datetime-local"
           icon={<Calendar className="w-5 h-5" />}
           error={errors.end_date?.message}
-          min={(startDate == "Invalid Date" ? now : new Date(startDate))
-            .toISOString()
-            .slice(0, 16)}
+          min={dateForInput(startDate == "Invalid Date" ? now : addMinutes(new Date(startDate), END_DATE_LIMIT))}
           {...register("end_date", {
             valueAsDate: true,
             required: "End date is required.",

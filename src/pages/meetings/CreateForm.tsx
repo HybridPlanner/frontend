@@ -10,6 +10,8 @@ import { Edit3, Calendar, Pencil, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
+const END_DATE_LIMIT = 5;
+
 interface FormInputs {
   title: string;
   start_date: string;
@@ -37,7 +39,7 @@ export function MeetingCreateForm({
     mode: "all",
     defaultValues: {
       start_date: dateForInput(new Date()),
-      end_date: dateForInput(addMinutes(new Date(), 5)),
+      end_date: dateForInput(addMinutes(new Date(), END_DATE_LIMIT)),
       attendees: [],
     },
   });
@@ -76,7 +78,7 @@ export function MeetingCreateForm({
     if (startDate === "Invalid Date" || endDate === "Invalid Date") return;
 
     // Update the "end_date" value only if it is behind the start date
-    const minimalEnd = addMinutes(new Date(startDate), 5);
+    const minimalEnd = addMinutes(new Date(startDate), END_DATE_LIMIT);
     
     // If the minimal date is after the current end date, update it
     if (!isAfter(minimalEnd, new Date(endDate))) return;
@@ -120,7 +122,7 @@ export function MeetingCreateForm({
           type="datetime-local"
           icon={<Calendar className="w-5 h-5" />}
           error={errors.end_date?.message}
-          min={dateForInput(startDate == "Invalid Date" ? now : addMinutes(new Date(startDate), 5))}
+          min={dateForInput(startDate == "Invalid Date" ? now : addMinutes(new Date(startDate), END_DATE_LIMIT))}
           {...register("end_date", {
             valueAsDate: true,
             required: "End date is required.",

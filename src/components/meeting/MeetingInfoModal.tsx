@@ -2,8 +2,9 @@ import { Meeting } from "@/types/Meeting";
 import classNames from "classnames";
 import { forwardRef, HTMLAttributes, type ReactElement } from "react";
 import { Button } from "../base/button/button";
-import { X } from "lucide-react";
+import { Pencil, X } from "lucide-react";
 import { MeetingDateBadge } from "./MeetingDateBadge";
+import { isAfter, isBefore } from "date-fns";
 
 type MeetingInfoModalProps = {
   meeting: Meeting | undefined;
@@ -29,6 +30,16 @@ export const MeetingInfoModal = forwardRef<
     >
       {meeting && (
         <form method="dialog">
+          {isBefore(new Date(), new Date(meeting.start_date)) && (
+            <button
+              id="edit"
+              aria-label="Edit meeting"
+              formNoValidate
+              className="absolute top-8 right-20 btn p-2 rounded-full hover:bg-gray-400 hover:bg-opacity-20"
+            >
+              <Pencil />
+            </button>
+          )}
           <button
             id="close"
             aria-label="close"

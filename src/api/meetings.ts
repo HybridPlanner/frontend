@@ -27,8 +27,8 @@ export async function createMeeting(
 ): Promise<Meeting> {
   const response = await apiClient.post<Meeting>("/meetings", {
     ...data,
-    start_date: data.start_date.getTime(),
-    end_date: data.end_date.getTime(),
+    start_date: data.start_date,
+    end_date: data.end_date,
   });
   return response.data;
 }

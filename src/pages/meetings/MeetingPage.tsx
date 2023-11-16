@@ -7,25 +7,36 @@ import { getMeeting } from "@/api/meetings";
 import { Meeting } from "@/types/Meeting";
 import { Loader2 } from "lucide-react";
 import { ErrorComponent } from "@/components/ErrorComponent";
+import { useParams } from "react-router-dom";
+import { AxiosError, isAxiosError } from "axios";
 
 export function MeetingPage({}): JSX.Element {
   const [meeting, setMeeting] = useState<Meeting | undefined>(undefined);
-  const [error, setError] = useState<Error | undefined>(undefined);
+  const [error, setError] = useState<string | undefined>(undefined);
+  const router = useParams<{ id: string }>();
 
-  useEffect(() => {
-    const fetchMeeting = async () => {
-      const meetingId = +window.location.pathname.split("/")[2];
+  const fetchMeeting = async () => {
+    try {
+      if (!router.id) throw new Error("No meeting id provided");
 
-      try {
-        const meeting = await getMeeting(meetingId);
-        setMeeting(meeting);
-      } catch (error) {
-        setError(error as Error);
+      const meetingId = parseInt(router.id);
+      const meeting = await getMeeting(meetingId);
+      setMeeting(meeting);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response?.status === 404) {
+          setError("Meeting not found");
+        }
+      } else if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unknown error occured");
       }
-    };
+    }
+  };
 
-    fetchMeeting();
-  }, []);
+  useEffect(() => { fetchMeeting(); }, [router]);
 
   const getContent = () => {
     if (error) {

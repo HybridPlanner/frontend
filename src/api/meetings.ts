@@ -25,11 +25,7 @@ export async function getPreviousMeetings(before: Date): Promise<Meeting[]> {
 export async function createMeeting(
   data: CreateMeetingInput
 ): Promise<Meeting> {
-  const response = await apiClient.post<Meeting>("/meetings", {
-    ...data,
-    start_date: data.start_date.getTime(),
-    end_date: data.end_date.getTime(),
-  });
+  const response = await apiClient.post<Meeting>("/meetings", data);
   return response.data;
 }
 

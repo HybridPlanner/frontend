@@ -38,8 +38,8 @@ export function MeetingCreateForm({
   } = useForm<FormInputs>({
     mode: "all",
     defaultValues: {
-      start_date: dateForInput(new Date()),
-      end_date: dateForInput(addMinutes(new Date(), END_DATE_LIMIT)),
+      start_date: dateForInput(addMinutes(new Date(), END_DATE_LIMIT)),
+      end_date: dateForInput(addMinutes(new Date(), END_DATE_LIMIT * 2)),
       attendees: [],
     },
   });
@@ -79,7 +79,7 @@ export function MeetingCreateForm({
 
     // Update the "end_date" value only if it is behind the start date
     const minimalEnd = addMinutes(new Date(startDate), END_DATE_LIMIT);
-    
+
     // If the minimal date is after the current end date, update it
     if (!isAfter(minimalEnd, new Date(endDate))) return;
 
@@ -122,7 +122,11 @@ export function MeetingCreateForm({
           type="datetime-local"
           icon={<Calendar className="w-5 h-5" />}
           error={errors.end_date?.message}
-          min={dateForInput(startDate == "Invalid Date" ? now : addMinutes(new Date(startDate), END_DATE_LIMIT))}
+          min={dateForInput(
+            startDate == "Invalid Date"
+              ? now
+              : addMinutes(new Date(startDate), END_DATE_LIMIT)
+          )}
           {...register("end_date", {
             valueAsDate: true,
             required: "End date is required.",

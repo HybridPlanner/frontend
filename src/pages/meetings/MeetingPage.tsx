@@ -7,8 +7,9 @@ import { getMeeting } from "@/api/meetings";
 import { Meeting, MeetingEvent  } from "@/types/Meeting";
 import { Loader2 } from "lucide-react";
 import { ErrorComponent } from "@/components/ErrorComponent";
-import { redirect, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { AxiosError, isAxiosError } from "axios";
+import { isBefore } from "date-fns";
 
 export function MeetingPage({}): JSX.Element {
   const [meeting, setMeeting] = useState<Meeting | undefined>(undefined);
@@ -22,6 +23,15 @@ export function MeetingPage({}): JSX.Element {
       const meetingId = parseInt(router.id);
       const meeting = await getMeeting(meetingId);
       setMeeting(meeting);
+
+      // If we're after the meeting end
+      if (meeting.publicUrl && isBefore(meeting.end_date, new Date())) { 
+        // Just show an error message
+        setError("Sorry, you're too late! The meeting has already ended.");
+      } else if (meeting.publicUrl && isBefore(meeting.start_date, new Date())) {
+        // If the meeting already started, redirect to the meeting
+        window.location.href = meeting.publicUrl;
+      }
     } catch (error) {
       if (isAxiosError(error)) {
         const axiosError = error as AxiosError;

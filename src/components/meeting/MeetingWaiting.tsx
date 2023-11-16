@@ -1,6 +1,5 @@
 import { Meeting } from "@/types/Meeting";
 import { MeetingDateBadge } from "./MeetingDateBadge";
-import { Card } from "../card/card";
 import { Link } from "react-router-dom";
 import { Button } from "../base/button/button";
 import { MeetingCountdown } from "./MeetingCountdown";
@@ -21,9 +20,7 @@ export function MeetingWaiting({ meeting }: { meeting: Meeting }): JSX.Element {
         <MeetingCountdown meeting={meeting} />
 
         <p className="text-sm text-slate-500 text-center">
-          You will be automatically added to the meeting as
-          <span className="font-medium"> invited@site.fr </span>
-          when it will start
+          You will be automatically redirected when the meeting start.
         </p>
       </div>
 

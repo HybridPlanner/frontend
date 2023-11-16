@@ -1,10 +1,10 @@
 import { Meeting } from "@/types/Meeting";
-import { formatDate } from "@/utils/date";
 import classNames from "classnames";
 import { format } from "date-fns";
-import { Edit2, Trash2 } from "lucide-react";
+import { LinkIcon, Trash2 } from "lucide-react";
 import { HTMLAttributes } from "react";
 import { MeetingDateBadge } from "./MeetingDateBadge";
+import { Link } from "react-router-dom";
 
 type MeetingCardProps = {
   meeting: Meeting;
@@ -61,6 +61,17 @@ export function MeetingCard({
           >
             <Trash2 className="w-5 h-5" />
           </button>
+
+          {meeting.publicUrl && (
+            <Link
+            type="button"
+            className="btn hover:text-blue-500 p-2 rounded-full hover:bg-gray-400 hover:bg-opacity-20"
+            aria-label="Open waiting page"
+            to={`/meeting/${meeting.id}`}
+          >
+            <LinkIcon className="w-5 h-5" />
+          </Link>
+          )}
         </div>
       )}
     </div>

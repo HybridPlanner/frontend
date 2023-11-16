@@ -6,7 +6,7 @@ import { setTime, sortMeetings } from "@/utils/date";
 import { MeetingCard } from "@/components/meeting/MeetingCard";
 import { Meeting } from "@/types/Meeting";
 import { MeetingCreateForm } from "./CreateForm";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import {
   deleteMeeting,
@@ -45,7 +45,7 @@ export function MeetingsDashboard(): JSX.Element {
     };
   }, [data, error]);
 
-  const fetchFutureMeetings = async () => {
+  const fetchFutureMeetings = useCallback(async () => {
     console.debug("Fetching future meetings");
     setLoading(true);
     try {
@@ -63,9 +63,9 @@ export function MeetingsDashboard(): JSX.Element {
     } finally {
       setLoading(false);
     }
-  };
+  }, [setData, setError]);
 
-  const fetchPreviousMeetings = async () => {
+  const fetchPreviousMeetings = useCallback(async () => {
     console.debug("Fetching previous meetings");
     setLoading(true);
     try {
@@ -95,18 +95,18 @@ export function MeetingsDashboard(): JSX.Element {
     } finally {
       setLoading(false);
     }
-  };
+  }, [setPreviousData, setError]);
 
   useEffect(() => {
     fetchFutureMeetings();
   }, []);
 
-  const updateList = async () => {
+  const updateList = useCallback(async () => {
     setData(undefined);
     await fetchFutureMeetings();
-  };
+  }, [setData, fetchFutureMeetings])
 
-  const showMeetingModal = async (
+  const showMeetingModal = useCallback(async (
     meeting: Meeting,
     action: "show" | "edit" | "delete"
   ) => {
@@ -121,7 +121,7 @@ export function MeetingsDashboard(): JSX.Element {
       setModalMeeting(meetingData);
       deleteMeetingModalRef.current?.showModal();
     }
-  };
+  }, [setModalMeeting, showMeetingModalRef])
 
   return (
     <div

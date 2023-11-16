@@ -1,13 +1,13 @@
 import classNames from "classnames";
 import Navbar from "../Navbar";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MeetingWaiting } from "@/components/meeting/MeetingWaiting";
 import { MeetingJoin } from "@/components/meeting/MeetingJoin";
 import { getMeeting } from "@/api/meetings";
-import { Meeting } from "@/types/Meeting";
+import { Meeting, MeetingEvent  } from "@/types/Meeting";
 import { Loader2 } from "lucide-react";
 import { ErrorComponent } from "@/components/ErrorComponent";
-import { useParams } from "react-router-dom";
+import { redirect, useParams } from "react-router-dom";
 import { AxiosError, isAxiosError } from "axios";
 
 export function MeetingPage({}): JSX.Element {
@@ -15,7 +15,7 @@ export function MeetingPage({}): JSX.Element {
   const [error, setError] = useState<string | undefined>(undefined);
   const router = useParams<{ id: string }>();
 
-  const fetchMeeting = async () => {
+  const fetchMeeting = useCallback(async () => {
     try {
       if (!router.id) throw new Error("No meeting id provided");
 
@@ -34,9 +34,46 @@ export function MeetingPage({}): JSX.Element {
         setError("An unknown error occured");
       }
     }
-  };
+  }, []);
 
-  useEffect(() => { fetchMeeting(); }, [router]);
+  const listenEvents = useCallback(() => {
+    console.log("Listening events");
+    if (!router.id) throw new Error("No meeting id provided");
+
+    const meetingId = parseInt(router.id);
+    const eventSource = new EventSource(`/api/meetings/${meetingId}/events`);
+
+    eventSource.onmessage = (event) => {
+      console.log("Event received", event);
+      const data = JSON.parse(event.data) as MeetingEvent;
+      console.log("Event data", data);
+      switch (data.type) {
+          case 'cancelled':
+            if (data.id !== meetingId)  return;
+            setError("Meeting cancelled");
+            break;
+          case 'started':
+            console.log("Meeting started", data.id, meetingId);
+            if (data.id !== meetingId)  return;
+            window.location.href = data.url
+            break;
+          case 'updated':
+            if (data.id !== meetingId)  return;
+            setMeeting(JSON.parse(event.data));
+            break;
+      }
+    };
+
+    return () => {
+      console.log("Closing event source");
+      eventSource.close();
+    }
+  }, [router]);
+
+  useEffect(() => {
+    fetchMeeting();
+    listenEvents();
+  }, [router, listenEvents, fetchMeeting]);
 
   const getContent = () => {
     if (error) {

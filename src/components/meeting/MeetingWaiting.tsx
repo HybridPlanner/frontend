@@ -20,7 +20,7 @@ export function MeetingWaiting({ meeting }: { meeting: Meeting }): JSX.Element {
         <MeetingCountdown meeting={meeting} />
 
         <p className="text-sm text-slate-500 text-center">
-          You will be automatically redirected when the meeting start.
+          You will be automatically redirected when the meeting starts.
         </p>
       </div>
 

@@ -1,127 +1,28 @@
 import { Card } from "@/components/card/card";
 import Navbar from "../Navbar";
 import { Calendar, ChevronDown, Loader2, Plus } from "lucide-react";
-import { addDays, isBefore, isEqual } from "date-fns";
-import { setTime, sortMeetings } from "@/utils/date";
 import { MeetingCard } from "@/components/meeting/MeetingCard";
-import { Meeting } from "@/types/Meeting";
 import { MeetingCreateForm } from "./CreateForm";
-import { useCallback, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
-import {
-  deleteMeeting,
-  getFutureMeetings,
-  getMeeting,
-  getPreviousMeetings,
-} from "@/api/meetings";
 import "./dashboard.css";
-import { MeetingInfoModal } from "@/components/meeting/MeetingInfoModal";
-import { MeetingDeleteModal } from "@/components/meeting/MeetingDeleteModal";
+import useMeetingInfoModal from "@/hooks/useMeetingInfoModal";
+import useMeetingDeleteModal from "@/hooks/useMeetingDeleteModal";
+import useFetchMeetings from "@/hooks/useFetchMeetings";
 
 export function MeetingsDashboard(): JSX.Element {
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<Meeting[] | undefined>(undefined);
-  const [previousData, setPreviousData] = useState<Meeting[] | undefined>(
-    undefined
-  );
-  const [error, setError] = useState<string | undefined>(undefined);
+  const {
+    fetchPreviousMeetings,
+    refreshMeetingList,
+    data,
+    previousData,
+    loading,
+    error,
+  } = useFetchMeetings();
 
-  const [modalMeeting, setModalMeeting] = useState<Meeting | undefined>(
-    undefined
-  );
-  const showMeetingModalRef = useRef<HTMLDialogElement>(null);
-  const deleteMeetingModalRef = useRef<HTMLDialogElement>(null);
-
-  useEffect(() => {
-    let timeout: number;
-    if (!(data instanceof Array) && error === undefined) {
-      timeout = window.setTimeout(() => {
-        setError("Something went wrong");
-      }, 5000);
-    }
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [data, error]);
-
-  const fetchFutureMeetings = useCallback(async () => {
-    console.debug("Fetching future meetings");
-    setLoading(true);
-    try {
-      const meetings = await getFutureMeetings();
-      console.debug("Future meeting fetched: %d", meetings.length);
-
-      sortMeetings(meetings);
-      setData(meetings);
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("Something went wrong");
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, [setData, setError]);
-
-  const fetchPreviousMeetings = useCallback(async () => {
-    console.debug("Fetching previous meetings");
-    setLoading(true);
-    try {
-      let previous_date: Date;
-      if (!previousData) {
-        console.debug("No previous meeting, fetching until now");
-        previous_date = new Date();
-      } else {
-        const last = previousData[previousData?.length - 1];
-        previous_date = last.start_date;
-      }
-
-      const meetings = await getPreviousMeetings(previous_date);
-      sortMeetings(meetings);
-      console.debug(
-        "Previous meeting fetched until %O: %d",
-        previous_date,
-        meetings.length
-      );
-      setPreviousData([...(previousData ?? []), ...meetings]);
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("Something went wrong");
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, [setPreviousData, setError]);
-
-  useEffect(() => {
-    fetchFutureMeetings();
-  }, []);
-
-  const updateList = useCallback(async () => {
-    setData(undefined);
-    await fetchFutureMeetings();
-  }, [setData, fetchFutureMeetings])
-
-  const showMeetingModal = useCallback(async (
-    meeting: Meeting,
-    action: "show" | "edit" | "delete"
-  ) => {
-    const meetingData = await getMeeting(meeting.id);
-    if (action === "show") {
-      // Fetch meeting data
-      console.debug("Show meeting %O", meetingData);
-      setModalMeeting(meetingData);
-      showMeetingModalRef.current?.showModal();
-    } else if (action === "delete") {
-      console.debug("Delete meeting %O", meeting);
-      setModalMeeting(meetingData);
-      deleteMeetingModalRef.current?.showModal();
-    }
-  }, [setModalMeeting, showMeetingModalRef])
+  const { showMeetingInfoModal, meetingInfoModal } = useMeetingInfoModal();
+  const { showMeetingDeleteModal, meetingDeleteModal } = useMeetingDeleteModal({
+    deleteCallback: refreshMeetingList,
+  });
 
   return (
     <div
@@ -160,8 +61,8 @@ export function MeetingsDashboard(): JSX.Element {
                       <MeetingCard
                         className="odd:bg-blue-50/20 even:bg-gray-50/20"
                         meeting={meeting}
-                        onOpenMeeting={(m) => showMeetingModal(m, "show")}
-                        onDeleteMeeting={(m) => showMeetingModal(m, "delete")}
+                        onOpenMeeting={(m) => showMeetingInfoModal(m)}
+                        onDeleteMeeting={(m) => showMeetingDeleteModal(m)}
                         key={meeting.id}
                       />
                     ))}
@@ -179,7 +80,7 @@ export function MeetingsDashboard(): JSX.Element {
                         className="odd:bg-blue-50 even:bg-gray-50"
                         meeting={meeting}
                         isPrevious={true}
-                        onOpenMeeting={(m) => showMeetingModal(m, "show")}
+                        onOpenMeeting={(m) => showMeetingInfoModal(m)}
                         key={meeting.id}
                       />
                     ))}
@@ -219,31 +120,20 @@ export function MeetingsDashboard(): JSX.Element {
               <button
                 type="button"
                 className="text-blue-500 hover:underline"
-                onClick={() => {
-                  setError(undefined);
-                  setData(undefined);
-                  fetchFutureMeetings();
-                }}
+                onClick={refreshMeetingList}
               >
                 Retry
               </button>
             </div>
           )}
 
-          <MeetingInfoModal ref={showMeetingModalRef} meeting={modalMeeting} />
-          <MeetingDeleteModal
-            ref={deleteMeetingModalRef}
-            meeting={modalMeeting}
-            onDelete={async (meeting) => {
-              await deleteMeeting(meeting.id);
-              await fetchFutureMeetings();
-            }}
-          />
+          {meetingInfoModal}
+          {meetingDeleteModal}
         </div>
 
         <div className="flex-1 relative">
           <Card icon={<Plus />} cardTitle="Plan a meeting" className="h-full">
-            <MeetingCreateForm onFormCreated={updateList} />
+            <MeetingCreateForm onFormCreated={refreshMeetingList} />
             <div className="colored-background"></div>
           </Card>
         </div>

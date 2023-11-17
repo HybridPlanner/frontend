@@ -30,7 +30,7 @@ export function MeetingCard({
       {...props}
     >
       <div className="row-span-2">
-        <div className="rounded-xl overflow-hidden flex flex-col bg-white shadow-md row-span-2">
+        <div className="rounded-md overflow-hidden flex flex-col bg-white shadow-md row-span-2">
           <span className="bg-red-500 px-2 pt-0.5 text-[0.7rem] text-white leading-4">
             {format(meeting.start_date, "LLL.").toUpperCase()}
           </span>
@@ -55,7 +55,7 @@ export function MeetingCard({
         <div className="row-start-1 row-span-2 col-start-3 invisible group-hover:visible group-focus-within:visible text-gray-600 flex flex-col gap-2">
           <button
             type="button"
-            className="btn hover:text-red-500 p-2 rounded-full hover:bg-gray-400 hover:bg-opacity-20"
+            className="btn hover:text-red-500 p-2 transition rounded-full hover:bg-gray-400 hover:bg-opacity-20"
             aria-label="Delete button"
             onClick={() => onDeleteMeeting?.(meeting)}
           >
@@ -64,13 +64,13 @@ export function MeetingCard({
 
           {meeting.publicUrl && (
             <Link
-            type="button"
-            className="btn hover:text-blue-500 p-2 rounded-full hover:bg-gray-400 hover:bg-opacity-20"
-            aria-label="Open waiting page"
-            to={`/meeting/${meeting.id}`}
-          >
-            <LinkIcon className="w-5 h-5" />
-          </Link>
+              type="button"
+              className="btn hover:text-blue-500 p-2 rounded-full hover:bg-gray-400 hover:bg-opacity-20"
+              aria-label="Open waiting page"
+              to={`/meeting/${meeting.id}`}
+            >
+              <LinkIcon className="w-5 h-5" />
+            </Link>
           )}
         </div>
       )}

@@ -1,6 +1,7 @@
 import { Meeting } from "@/types/Meeting";
 import { formatDate } from "@/utils/date";
 import classNames from "classnames";
+import { format, isToday, isTomorrow } from "date-fns";
 import { type ReactElement } from "react";
 
 interface MeetingDateBadgeProps {
@@ -13,6 +14,18 @@ export function MeetingDateBadge({
   className,
 }: MeetingDateBadgeProps): ReactElement {
   if (meeting.started) {
+    const formatDate = (start: Date, end: Date): string => {
+      if (
+        isToday(end) ||
+        isTomorrow(end) ||
+        format(start, "d") === format(end, "d")
+      ) {
+        return format(end, "HH:mm");
+      } else {
+        return `${format(end, "EEEE d")} at ${format(end, "HH:mm")}`;
+      }
+    };
+
     return (
       <span
         className={classNames(
@@ -23,7 +36,7 @@ export function MeetingDateBadge({
           "bg-red-100 px-3 rounded-full text-red-700 relative font-medium pl-5"
         )}
       >
-        {formatDate(meeting.start_date, meeting.end_date)}
+        Ongoing until {formatDate(meeting.start_date, meeting.end_date)}
       </span>
     );
   }

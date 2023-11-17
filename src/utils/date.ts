@@ -43,7 +43,7 @@ export function sortMeetings(meetings: Meeting[]) {
     meetings.sort((m1, m2) => {
         // If m1 start date is before m2 start date, return -1
         if (isBefore(m1.start_date, m2.start_date)) {
-            return -1;
+            return 1;
         }
 
         // If m1 start date is after m2 start date, return 1
@@ -53,11 +53,11 @@ export function sortMeetings(meetings: Meeting[]) {
 
         // If m1 and m2 start dates are the same, compare end dates
         if (isBefore(m1.end_date, m2.end_date)) {
-            return -1;
+            return 1;
         }
 
         if (isBefore(m2.end_date, m1.end_date)) {
-            return 1;
+            return -1;
         }
 
         // If m1 and m2 end dates are the same, return 0

@@ -13,7 +13,7 @@ export async function getFutureMeetings(): Promise<Meeting[]> {
 
 export async function getPreviousMeetings(before: Date): Promise<Meeting[]> {
   const response = await apiClient.get<{ meetings: Meeting[] }>(
-    `/meetings?before=${before.getTime()}`
+    `/meetings?before=${before.toISOString()}`
   );
   return response.data.meetings.map((meeting) => ({
     ...meeting,

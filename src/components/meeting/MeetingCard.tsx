@@ -35,7 +35,7 @@ export function MeetingCard({
             {format(meeting.start_date, "LLL.").toUpperCase()}
           </span>
           <span className="text-gray-900 font-bold text-xl px-2 py-1 leading-4 text-center">
-            {meeting.start_date.getDay()}
+            {meeting.start_date.getDate()}
           </span>
         </div>
       </div>

@@ -6,6 +6,7 @@ export interface Meeting {
   end_date: Date;
   attendees: { id: number; email: string }[];
   publicUrl?: string;
+  started: boolean;
 }
 
 export interface CreateMeetingInput {

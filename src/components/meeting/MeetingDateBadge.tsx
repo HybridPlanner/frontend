@@ -12,6 +12,22 @@ export function MeetingDateBadge({
   meeting,
   className,
 }: MeetingDateBadgeProps): ReactElement {
+  if (meeting.started) {
+    return (
+      <span
+        className={classNames(
+          className,
+          'before:content-[""] before:rounded-full before:w-2 before:h-2 before:bg-red-500 before:absolute',
+          "before:inline-block before:mr-2 before:top-1.5 before:left-2 before:animate-pulse",
+
+          "bg-red-100 px-3 rounded-full text-red-700 relative font-medium pl-5"
+        )}
+      >
+        {formatDate(meeting.start_date, meeting.end_date)}
+      </span>
+    );
+  }
+
   return (
     <span
       className={classNames(

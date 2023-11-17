@@ -35,7 +35,7 @@ export function MeetingCountdown({
                     {[days, hours, minutes, seconds].map((value, index) => {
                       if (index > 0 || value > 0) {
                         return (
-                          <CountdownValue value={value} label={labels[index]} />
+                          <CountdownValue key={index} value={value} label={labels[index]} />
                         );
                       }
                     })}
@@ -53,7 +53,7 @@ export function MeetingCountdown({
 function CountdownValue({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col gap-2 items-center">
-      <span className="text-4xl xl:text-6xl text-blue-500">{value}</span>
+      <span className="text-4xl xl:text-6xl text-blue-500">{value < 10 ? `0${value}` : value}</span>
       <span className="text-sm text-gray-500">{label}</span>
     </div>
   );

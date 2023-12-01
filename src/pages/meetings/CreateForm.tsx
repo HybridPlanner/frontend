@@ -1,18 +1,19 @@
 import { createMeeting } from "@/api/meetings";
 import { Button } from "@/components/base/button/button";
 import { Input } from "@/components/form/input/input";
-import { InputTags } from "@/components/form/inputTags/inputTags";
 import { Textarea } from "@/components/form/textarea/textarea";
 import { formatDatetimeToInputValue as dateForInput } from "@/utils/date";
 import classNames from "classnames";
 import { isAfter, addMinutes } from "date-fns";
-import { Edit3, Calendar, Pencil, Loader2 } from "lucide-react";
+import { Edit3, Calendar, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { AttendeesInput } from "./AttendeesInput";
+import { Attendee } from "@/types/Attendee";
 
 const END_DATE_LIMIT = 5;
 
-interface FormInputs {
+interface CreateMeetingForm {
   title: string;
   start_date: string;
   end_date: string;
@@ -35,7 +36,7 @@ export function MeetingCreateForm({
     watch,
     trigger,
     setValue,
-  } = useForm<FormInputs>({
+  } = useForm<CreateMeetingForm>({
     mode: "all",
     defaultValues: {
       start_date: dateForInput(addMinutes(new Date(), END_DATE_LIMIT)),
@@ -56,7 +57,7 @@ export function MeetingCreateForm({
   const endDate = watch("end_date", "Invalid Date");
   const now = new Date();
 
-  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+  const onSubmit: SubmitHandler<CreateMeetingForm> = async (data) => {
     setLoading(true);
 
     await createMeeting({
@@ -138,16 +139,11 @@ export function MeetingCreateForm({
       </div>
 
       <div className="flex flex-row gap-4 w-full">
-        <InputTags
-          id="attendees"
-          label="Attendees"
-          icon={<Pencil className="w-5 h-5" />}
-          placeholder="Enter attendees emails, separated by a comma."
-          className="w-full"
+        <AttendeesInput
           error={errors.attendees?.message}
           value={watch("attendees")}
-          onChange={(emails: string[]) => {
-            setValue("attendees", emails, { shouldValidate: true });
+          onChange={(values) => {
+            setValue("attendees", values, { shouldValidate: true });
           }}
         />
       </div>

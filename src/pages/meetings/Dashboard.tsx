@@ -45,7 +45,7 @@ export function MeetingsDashboard(): JSX.Element {
               <div className="flex flex-col gap-4">
                 <div>
                   <Header
-                    className="sticky top-0 bg-white/70 backdrop-blur py-2"
+                    className="sticky top-0 bg-white/70 backdrop-blur py-2 z-10"
                     icon={<Calendar />}
                   >
                     Upcoming meetings
@@ -78,7 +78,7 @@ export function MeetingsDashboard(): JSX.Element {
                   {previousData && previousData.length > 0 && (
                     <>
                       <Header
-                        className="sticky top-0 bg-white/70 backdrop-blur py-2"
+                        className="sticky top-0 bg-white/70 backdrop-blur py-2 z-10"
                         icon={<History />}
                       >
                         Past meetings

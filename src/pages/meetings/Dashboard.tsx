@@ -33,7 +33,7 @@ export function MeetingsDashboard(): JSX.Element {
     >
       <Navbar />
 
-      <div className="my-auto mx-6 py-8 flex flex-col xl:flex-row gap-16 items-start">
+      <div className="my-auto mx-6 py-8 flex flex-col xl:flex-row gap-16 xl:items-start">
         <div className="flex-1 flex flex-col gap-8">
           <header>
             <h1 className="font-bold text-5xl mb-4 tracking-tight">Hey 👋</h1>

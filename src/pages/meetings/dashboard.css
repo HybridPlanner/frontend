@@ -1,5 +1,5 @@
 .colored-background::before {
-  @apply absolute w-full h-full top-0 left-0 right-0 bottom-0 blur-3xl -z-10 flex flex-col opacity-70;
+  @apply absolute w-full h-full top-0 left-0 right-0 bottom-0 blur-2xl -z-10 flex flex-col opacity-30;
   @apply content-[''];
 
   transition: all 750ms ease-in-out;

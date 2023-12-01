@@ -1,18 +1,17 @@
 import classNames from "classnames";
 import React, { ReactElement, ReactHTML, forwardRef } from "react";
 import { type LucideIcon } from "lucide-react";
+import { Header } from "../Header";
 
 type CardProps = {
   icon?: ReactElement<LucideIcon>;
   cardTitle?: string;
   actions?: ReactElement[];
-  withoutBackground?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export function Card({
   className,
   children,
-  withoutBackground = false,
   cardTitle,
   ...props
 }: CardProps): JSX.Element {
@@ -20,23 +19,11 @@ export function Card({
     <div
       {...props}
       className={classNames(
-        withoutBackground
-          ? "bg-transparent"
-          : "rounded-lg bg-white border border-gray-200 shadow px-8",
-        "pt-10 pb-6",
+        "pt-10 pb-6 rounded-lg bg-white border border-gray-200 shadow px-8",
         className
       )}
     >
-      <header className="flex flex-row items-center gap-4 mb-4">
-        {cardTitle && props.icon ? (
-          <span className="bg-[#D1E9FF] text-blue-500 rounded-full inline-block p-2">
-            {props.icon}
-          </span>
-        ) : undefined}
-        {cardTitle && (
-          <h1 className="text-2xl font-bold text-blue-500">{cardTitle}</h1>
-        )}
-      </header>
+      <Header icon={props.icon}>{cardTitle}</Header>
       <div className="pb-2">{children}</div>
       <div className="flex flex-row justify-end gap-2 pt-2">
         {props.actions}

@@ -8,6 +8,7 @@ import "./dashboard.css";
 import useMeetingInfoModal from "@/hooks/useMeetingInfoModal";
 import useMeetingDeleteModal from "@/hooks/useMeetingDeleteModal";
 import useFetchMeetings from "@/hooks/useFetchMeetings";
+import useMeetingUpdateModal from "@/hooks/useMeetingUpdateModal";
 
 export function MeetingsDashboard(): JSX.Element {
   const {
@@ -20,6 +21,9 @@ export function MeetingsDashboard(): JSX.Element {
   } = useFetchMeetings();
 
   const { showMeetingInfoModal, meetingInfoModal } = useMeetingInfoModal();
+  const { showMeetingUpdateModal, meetingUpdateModal } = useMeetingUpdateModal({
+    updateCallback: refreshMeetingList,
+  });
   const { showMeetingDeleteModal, meetingDeleteModal } = useMeetingDeleteModal({
     deleteCallback: refreshMeetingList,
   });
@@ -63,6 +67,7 @@ export function MeetingsDashboard(): JSX.Element {
                         meeting={meeting}
                         onOpenMeeting={(m) => showMeetingInfoModal(m)}
                         onDeleteMeeting={(m) => showMeetingDeleteModal(m)}
+                        onEditMeeting={(m) => showMeetingUpdateModal(m)}
                         key={meeting.id}
                       />
                     ))}
@@ -129,6 +134,7 @@ export function MeetingsDashboard(): JSX.Element {
 
           {meetingInfoModal}
           {meetingDeleteModal}
+          {meetingUpdateModal}
         </div>
 
         <div className="flex-1 relative">

@@ -24,7 +24,7 @@ export default function useMeetingDeleteModal({
     [deleteMeetingModalRef]
   );
 
-  const meetingDeleteModal = (
+  const meetingDeleteModal = modalMeeting && (
     <MeetingDeleteModal
       ref={deleteMeetingModalRef}
       meeting={modalMeeting}

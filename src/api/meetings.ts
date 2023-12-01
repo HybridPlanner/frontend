@@ -45,7 +45,7 @@ export async function getMeeting(id: number): Promise<Meeting> {
 }
 
 export async function updateMeeting(
-  id: string,
+  id: number,
   data: Partial<CreateMeetingInput>
 ): Promise<Meeting> {
   const response = await apiClient.patch<Meeting>(`/meetings/${id}`, data);

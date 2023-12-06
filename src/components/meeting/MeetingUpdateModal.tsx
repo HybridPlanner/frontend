@@ -13,7 +13,7 @@ import { Button } from "../base/button/button";
 import { Calendar, Edit3, Loader2, Pencil, X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formatDatetimeToInputValue as dateForInput } from "@/utils/date";
-import { addMinutes, isAfter } from "date-fns";
+import { addMinutes, isAfter, isBefore } from "date-fns";
 import { Input } from "../form/input/input";
 import { InputTags } from "../form/inputTags/inputTags";
 import { Textarea } from "../form/textarea/textarea";
@@ -173,7 +173,7 @@ export const MeetingUpdateModal = forwardRef<
                 valueAsDate: true,
                 required: "End date is required.",
                 validate: (value) =>
-                  isAfter(new Date(value), new Date(startDate)) ||
+                  isBefore(new Date(startDate), new Date(value)) ||
                   "End date must be after start date.",
               })}
             />

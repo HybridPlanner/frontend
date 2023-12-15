@@ -1,51 +1,108 @@
-import { getAttendees } from "@/api/attendees";
-import { InputTags } from "@/components/form/inputTags/inputTags";
-import { Attendee } from "@/types/Attendee";
-import { Pencil } from "lucide-react";
-import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import { useCallback, useState } from "react";
+import { ReactTags, Tag, TagSuggestion } from "react-tag-autocomplete";
+import { getAttendees } from "@/api/attendees";
+import classNames from "classnames";
 
 interface AttendeesInputProps {
-  value: string[];
-  onChange: (values: string[]) => void;
+  value: Tag[];
+  onChange: (values: Tag[]) => void;
   error: string | undefined;
+  id: string;
 }
 
-export function AttendeesInput({
+export const AttendeesInput = ({
   value,
   onChange,
   error,
-}: AttendeesInputProps): JSX.Element {
-  const [suggestions, setSuggestions] = useState([] as Attendee[]);
+  id,
+}: AttendeesInputProps): JSX.Element => {
+  const [isBusy, setIsBusy] = useState<boolean>(false);
+  const [suggestions, setSuggestions] = useState<TagSuggestion[]>([]);
 
-  const inputChanged = useDebouncedCallback((search) => {
-    if (search.length < 3) {
+  const onAdd = useCallback(
+    (newTag: Tag) => {
+      onChange?.([...(value ?? []), newTag]);
       setSuggestions([]);
-      return;
+    },
+    [value]
+  );
+
+  const onDelete = useCallback(
+    (index: number) => {
+      onChange?.((value ?? []).filter((_, i) => i !== index));
+    },
+    [value]
+  );
+
+  const onInput = useDebouncedCallback(async (value: string) => {
+    if (isBusy) return;
+
+    setIsBusy(true);
+
+    try {
+      const suggestions = await getAttendees(value);
+      setSuggestions(
+        suggestions.map((suggestion) => ({
+          label: suggestion.email,
+          value: suggestion.email,
+        }))
+      );
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsBusy(false);
     }
-    getAttendees(search).then((data) => {
-      setSuggestions(data);
-    });
   }, 300);
 
+  const noOptionsText =
+    isBusy && !suggestions.length ? "Loading..." : "No suggestions found";
+
   return (
-    <InputTags
-      id="attendees"
-      label="Attendees"
-      icon={<Pencil className="w-5 h-5" />}
-      placeholder="Enter attendees emails, separated by a comma."
-      className="w-full"
-      onChange={(value) => {
-        onChange(value);
-        setSuggestions([]);
-      }}
-      error={error}
-      value={value}
-      onChangeInput={inputChanged}
-      suggestions={suggestions.map((suggestion) => ({
-        display: suggestion.email,
-        value: suggestion.email,
-      }))}
-    />
+    <div className="flex flex-col w-full">
+      <label
+        htmlFor={id}
+        className="font-semibold text-gray-700 text-sm group-focus-within:text-blue-500 leading-8"
+      >
+        Select attendees
+      </label>
+      <ReactTags
+        ariaDescribedBy="Select attendees"
+        id={id}
+        noOptionsText={noOptionsText}
+        onAdd={onAdd}
+        onDelete={onDelete}
+        onInput={onInput}
+        placeholderText={value?.length ? "" : "Enter attendees emails..."}
+        selected={value}
+        suggestions={suggestions}
+        activateFirstOption={true}
+        allowNew={true}
+        classNames={{
+          root: classNames(
+            "transition-all duration-100",
+            "py-2.5 px-3 w-full h-full outline-none border border-gray-300 rounded-lg shadow-xs relative inline-flex items-center gap-2"
+          ),
+          rootIsActive: "border-blue-500",
+          rootIsDisabled: "bg-gray-100 text-gray-500",
+          rootIsInvalid:
+            "invalid:border-red-500 border-red-500 focus:ring-2 ring-red-500 ring-offset-2",
+          label: "hidden",
+          tagList: "flex gap-2 flex-wrap",
+          tagListItem:
+            "rounded-full bg-gray-200 text-gray-800 inline-flex flex-row gap-2 px-3 h-full items-center",
+          tag: "",
+          tagName: "",
+          comboBox: "",
+          input:
+            "outline-none w-full placeholder:text-gray-500 placeholder:transition-all placeholder:duration-100",
+          listBox:
+            "absolute z-10 top-12 bg-white rounded-lg shadow-lg left-0 w-full border border-gray-300 flex flex-col p-2",
+          option: "cursor-pointer hover:bg-gray-100 rounded-lg p-2",
+          optionIsActive: "bg-gray-100",
+          highlight: "bg-yellow-200",
+        }}
+      />
+    </div>
   );
-}
+};

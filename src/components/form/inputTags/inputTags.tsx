@@ -1,22 +1,20 @@
 import classNames from "classnames";
 import { LucideIcon } from "lucide-react";
 import { ReactElement, forwardRef } from "react";
-import { ReactMultiEmail } from "react-multi-email";
-import { TagElement } from "./Tag";
-import "./inputTag.css";
-import { AutocompleteItem } from "@/types/AutocompleteItem";
+import { ReactTags, Tag } from "react-tag-autocomplete";
 
 export type InputTagsProps = {
   id: string;
   label?: string;
   icon?: ReactElement<LucideIcon>;
   error?: string;
-  suggestions?: AutocompleteItem[];
+  suggestions?: Tag[];
   placeholder: string;
   className?: string;
   disabled?: boolean;
-  value?: string[];
-  onChange?: (emails: string[]) => void;
+  value?: Tag[];
+  emptyState: string;
+  onChange?: (emails: Tag[]) => void;
   onChangeInput?: (search: string) => void;
 };
 
@@ -29,6 +27,7 @@ export const InputTags = forwardRef<HTMLDivElement, InputTagsProps>(
       className,
       disabled,
       suggestions,
+      emptyState,
       ...props
     }: InputTagsProps,
     ref
@@ -43,7 +42,21 @@ export const InputTags = forwardRef<HTMLDivElement, InputTagsProps>(
             {label}
           </label>
         )}
-        <div className="relative group">
+
+        <ReactTags
+          labelText={label}
+          selected={props.value ?? []}
+          suggestions={suggestions ?? []}
+          onAdd={(tag) => {
+            props.onChange?.([...(props.value ?? []), tag]);
+          }}
+          onDelete={(index) => {
+            props.onChange?.((props.value ?? []).filter((_, i) => i !== index));
+          }}
+          noOptionsText={emptyState}
+        />
+
+        {/* <div className="relative group">
           <ReactMultiEmail
             className={classNames(
               "relative group inputTags",
@@ -81,11 +94,13 @@ export const InputTags = forwardRef<HTMLDivElement, InputTagsProps>(
                 <button
                   key={suggestion.value}
                   className="flex flex-row items-center gap-2 py-2 px-3 hover:bg-gray-100 rounded-xl"
-                  onClick={() =>
-                    props.onChange
-                      ? [suggestion.value, ...(props.value || [])]
-                      : undefined
-                  }
+                  onClick={() => {
+                    props.onChangeInput?.("");
+                    props.onChange?.([
+                      ...(props.value || []),
+                      suggestion.value,
+                    ]);
+                  }}
                 >
                   <span>{suggestion.display}</span>
                 </button>
@@ -101,7 +116,7 @@ export const InputTags = forwardRef<HTMLDivElement, InputTagsProps>(
           >
             {props.icon}
           </div>
-        </div>
+        </div> */}
         {error && (
           <span className="text-sm text-red-500 px-2 absolute -bottom-6">
             {error}

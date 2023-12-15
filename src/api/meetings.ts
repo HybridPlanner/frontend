@@ -1,4 +1,4 @@
-import { CreateMeetingInput, Meeting } from "@/types/Meeting";
+import { CreateMeetingInput, CreateMeetingPayload, Meeting } from "@/types/Meeting";
 import { apiClient } from ".";
 
 export async function getFutureMeetings(): Promise<Meeting[]> {
@@ -23,7 +23,7 @@ export async function getPreviousMeetings(before: Date): Promise<Meeting[]> {
 }
 
 export async function createMeeting(
-  data: CreateMeetingInput
+  data: CreateMeetingPayload
 ): Promise<Meeting> {
   const response = await apiClient.post<Meeting>("/meetings", data);
   return response.data;

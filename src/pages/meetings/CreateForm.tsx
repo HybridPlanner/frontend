@@ -9,7 +9,7 @@ import { Edit3, Calendar, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AttendeesInput } from "./AttendeesInput";
-import { Attendee } from "@/types/Attendee";
+import { Tag } from "react-tag-autocomplete";
 
 const END_DATE_LIMIT = 5;
 
@@ -17,7 +17,7 @@ interface CreateMeetingForm {
   title: string;
   start_date: string;
   end_date: string;
-  attendees: string[];
+  attendees: Tag[];
   description: string;
 }
 
@@ -64,7 +64,9 @@ export function MeetingCreateForm({
       ...data,
       start_date: new Date(data.start_date),
       end_date: new Date(data.end_date),
-      attendees: data.attendees || [],
+      attendees: (data.attendees || []).map(
+        (attendee) => attendee.value as string
+      ),
     });
 
     await onFormCreated?.();
@@ -90,7 +92,10 @@ export function MeetingCreateForm({
   }, [startDate, endDate]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={classNames({ loading })}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className={classNames({ loading }, "flex flex-col gap-4")}
+    >
       <Input
         id="title"
         label="Meeting name"
@@ -138,15 +143,16 @@ export function MeetingCreateForm({
         />
       </div>
 
-      <div className="flex flex-row gap-4 w-full">
-        <AttendeesInput
-          error={errors.attendees?.message}
-          value={watch("attendees")}
-          onChange={(values) => {
-            setValue("attendees", values, { shouldValidate: true });
-          }}
-        />
-      </div>
+      <AttendeesInput
+        id="attendees"
+        error={errors.attendees?.message}
+        value={watch("attendees")}
+        onChange={(values) => {
+          setValue("attendees", values, {
+            shouldValidate: true,
+          });
+        }}
+      />
 
       <Textarea
         id="description"

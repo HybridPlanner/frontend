@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind variants;
+
+html, body {
+    @apply antialiased;
+}
+
+#root {
+    @apply min-h-screen;
+}
+
+* {
+    @apply outline-blue-500 outline-2 outline-offset-2;
+}

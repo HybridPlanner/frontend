@@ -1,0 +1,14 @@
+{
+    "name": "HybridPlanner",
+    "description": "HybridPlanner let you plan Raimbow meetings with external participants easily. It’s free.",
+    "start_url": "/",
+    "lang": "fr_FR",
+    "theme_color": "#fff",
+    "display": "standalone",
+    "icons": [
+      {
+        "src": "/src/assets/img/logo.png",
+        "sizes": "164x164"
+      }
+    ]
+  }

@@ -3,6 +3,10 @@ import { Meeting } from "@/types/Meeting";
 import { sortMeetings } from "@/utils/date";
 import { useCallback, useEffect, useState } from "react";
 
+/**
+ * Custom hook for fetching meetings data.
+ * @returns An object containing functions and state variables related to fetching meetings.
+ */
 export default function useFetchMeetings() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<Meeting[] | undefined>(undefined);
@@ -12,6 +16,10 @@ export default function useFetchMeetings() {
     undefined
   );
 
+  /**
+   * Fetches future meetings from the server and updates the component state.
+   * @returns {Promise<void>} A promise that resolves when the fetch is complete.
+   */
   const fetchFutureMeetings = useCallback(async () => {
     console.debug("Fetching future meetings");
     setLoading(true);
@@ -32,6 +40,12 @@ export default function useFetchMeetings() {
     }
   }, [setData, setError]);
 
+  /**
+   * Fetches previous meetings and updates the state with the fetched data.
+   * If there are no previous meetings, it fetches meetings until the current date.
+   * 
+   * @returns {void}
+   */
   const fetchPreviousMeetings = useCallback(async () => {
     console.debug("Fetching previous meetings");
     setLoading(true);
@@ -64,10 +78,15 @@ export default function useFetchMeetings() {
     }
   }, [setPreviousData, setError]);
 
+  // Fetch future meetings on component mount
   useEffect(() => {
     fetchFutureMeetings();
   }, []);
 
+
+  /**
+   * Refreshes the meeting list by resetting the data and error states, and then fetching future meetings.
+   */
   const refreshMeetingList = useCallback(async () => {
     setData(undefined);
     setError(undefined);

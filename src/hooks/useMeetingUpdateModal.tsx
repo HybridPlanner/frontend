@@ -3,6 +3,12 @@ import { MeetingUpdateModal } from "@/components/meeting/MeetingUpdateModal";
 import { Meeting } from "@/types/Meeting";
 import { useCallback, useRef, useState } from "react";
 
+/**
+ * Custom hook for managing the meeting update modal.
+ * @param options - The options for the hook.
+ * @param options.updateCallback - The callback function to be called after a meeting is updated.
+ * @returns An object containing the function to show the meeting update modal and the JSX element for the modal.
+ */
 export default function useMeetingUpdateModal({
   updateCallback,
 }: {

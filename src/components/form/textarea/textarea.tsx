@@ -13,6 +13,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ id, label, error, ...props }, ref) => {
     return (
       <div className="relative mb-6 group">
+        {/* If the textarea has a label props, render it */}
         {label && (
           <label
             htmlFor={id}
@@ -48,6 +49,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             )}
           ></textarea>
 
+          {/* If the textarea has an icon props, render it */}
           <div
             className={classNames(
               "absolute pointer-events-none inset-y-0 left-0 flex items-center pl-3 text-gray-500 peer-disabled:text-gray-500",
@@ -58,6 +60,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             {props.icon}
           </div>
         </div>
+        {/* If the textarea has an error props, render it */}
         {error && <span className="text-sm text-red-500 px-2">{error}</span>}
       </div>
     );

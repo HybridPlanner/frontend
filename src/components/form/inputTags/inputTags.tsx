@@ -27,6 +27,7 @@ export const InputTags = forwardRef<HTMLDivElement, InputTagsProps>(
   ): JSX.Element => {
     return (
       <div className={classNames("relative mb-6 group", className)}>
+        {/* If the input tags has a label props, render it */}
         {label && (
           <label
             htmlFor={id}
@@ -36,6 +37,7 @@ export const InputTags = forwardRef<HTMLDivElement, InputTagsProps>(
           </label>
         )}
         <div className="relative group">
+          {/* We're using the react-multi-email library to handle the mails input */}
           <ReactMultiEmail
             className={classNames(
               "relative group inputTags",
@@ -58,6 +60,7 @@ export const InputTags = forwardRef<HTMLDivElement, InputTagsProps>(
             onChange={props.onChange}
             emails={props.value}
             getLabel={(email, index, removeEmail) => (
+              // To be able to customize the input, we're using our own TagElement component
               <TagElement
                 key={index}
                 data-tag
@@ -66,6 +69,7 @@ export const InputTags = forwardRef<HTMLDivElement, InputTagsProps>(
               />
             )}
           />
+          {/* If the input tags has an icon props, render it */}
           <div
             className={classNames(
               "absolute pointer-events-none inset-y-0 left-0 flex items-center pl-3 text-gray-500 peer-disabled:text-gray-500",
@@ -76,6 +80,7 @@ export const InputTags = forwardRef<HTMLDivElement, InputTagsProps>(
             {props.icon}
           </div>
         </div>
+        {/* If the input tags has an error props, render it */}
         {error && (
           <span className="text-sm text-red-500 px-2 absolute -bottom-6">
             {error}

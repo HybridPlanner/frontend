@@ -1,3 +1,5 @@
+import { Tag } from "react-tag-autocomplete";
+
 export interface Meeting {
   id: number;
   title: string;
@@ -9,11 +11,18 @@ export interface Meeting {
   started: boolean;
 }
 
-export interface CreateMeetingInput {
+interface CreateMeeting {
   title: string;
   description?: string;
   start_date: Date;
   end_date: Date;
+}
+
+export interface CreateMeetingInput extends CreateMeeting {
+  attendees: Tag[]
+}
+
+export interface CreateMeetingPayload extends CreateMeeting {
   attendees: string[];
 }
 

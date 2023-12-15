@@ -36,6 +36,7 @@ export function MeetingCreateForm({
     watch,
     trigger,
     setValue,
+    setError,
   } = useForm<CreateMeetingForm>({
     mode: "all",
     defaultValues: {
@@ -146,6 +147,7 @@ export function MeetingCreateForm({
       <AttendeesInput
         id="attendees"
         error={errors.attendees?.message}
+        setError={(message: string) => setError("attendees", { message })}
         value={watch("attendees")}
         onChange={(values) => {
           setValue("attendees", values, {

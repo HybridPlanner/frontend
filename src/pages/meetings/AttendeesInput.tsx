@@ -9,6 +9,7 @@ interface AttendeesInputProps {
   onChange: (values: Tag[]) => void;
   error: string | undefined;
   id: string;
+  setError?: (error: string) => void;
 }
 
 export const AttendeesInput = ({
@@ -16,6 +17,7 @@ export const AttendeesInput = ({
   onChange,
   error,
   id,
+  setError,
 }: AttendeesInputProps): JSX.Element => {
   const [isBusy, setIsBusy] = useState<boolean>(false);
   const [suggestions, setSuggestions] = useState<TagSuggestion[]>([]);
@@ -78,12 +80,17 @@ export const AttendeesInput = ({
         suggestions={suggestions}
         activateFirstOption={true}
         allowNew={true}
+        isInvalid={!!error}
+        ariaErrorMessage={error}
+        onValidate={(tag) => {
+          return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i.test(tag);
+        }}
         classNames={{
           root: classNames(
             "transition-all duration-100",
             "py-2.5 px-3 w-full h-full outline-none border border-gray-300 rounded-lg shadow-xs relative inline-flex items-center gap-2"
           ),
-          rootIsActive: "border-blue-500",
+          rootIsActive: "!border-blue-500",
           rootIsDisabled: "bg-gray-100 text-gray-500",
           rootIsInvalid:
             "invalid:border-red-500 border-red-500 focus:ring-2 ring-red-500 ring-offset-2",
@@ -103,6 +110,7 @@ export const AttendeesInput = ({
           highlight: "bg-yellow-200",
         }}
       />
+      {error && <span className="text-sm text-red-500 px-2">{error}</span>}
     </div>
   );
 };

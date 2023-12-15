@@ -22,6 +22,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           </label>
         )}
         <div className="relative group">
+          {/* The input element is wrapped in a div to allow the icon to be placed on the left */}
           <input
             {...props}
             placeholder={props.placeholder || label}
@@ -48,6 +49,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             )}
           />
 
+          {/* If the button has an icon props, render it */}
           <div
             className={classNames(
               "absolute pointer-events-none inset-y-0 left-0 flex items-center pl-3 text-gray-500 peer-disabled:text-gray-500",
@@ -58,6 +60,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             {props.icon}
           </div>
         </div>
+        {/* If the button has an error props, render it */}
         {error && (
           <span className="text-sm text-red-500 px-2 absolute -bottom-6">
             {error}

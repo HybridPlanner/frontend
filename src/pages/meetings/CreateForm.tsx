@@ -78,6 +78,13 @@ export function MeetingCreateForm({
     setLoading(false);
   };
 
+  /**
+   * Updates the "end_date" value based on the start date and end date.
+   * If the start date or end date is invalid, the function returns early.
+   * If the minimal end date is after the current end date, the end date is updated.
+   * @param startDate The start date of the meeting.
+   * @param endDate The end date of the meeting.
+   */
   useEffect(() => {
     if (startDate === "Invalid Date" || endDate === "Invalid Date") return;
 

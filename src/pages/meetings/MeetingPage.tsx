@@ -41,7 +41,7 @@ export function MeetingPage({}): JSX.Element {
       } else if (error instanceof Error) {
         setError(error.message);
       } else {
-        setError("An unknown error occured");
+        setError("An unknown error occurred");
       }
     }
   }, []);
@@ -54,23 +54,36 @@ export function MeetingPage({}): JSX.Element {
     const eventSource = new EventSource(`/api/meetings/${meetingId}/events`);
 
     eventSource.onmessage = (event) => {
+      /**
+       * Handles the event received from the server.
+       * @param event - The event received from the server.
+       */
       console.log("Event received", event);
       const data = JSON.parse(event.data) as MeetingEvent;
       console.log("Event data", data);
       switch (data.type) {
-          case 'cancelled':
-            if (data.id !== meetingId)  return;
-            setError("Meeting cancelled");
-            break;
-          case 'started':
-            console.log("Meeting started", data.id, meetingId);
-            if (data.id !== meetingId)  return;
-            window.location.href = data.url
-            break;
-          case 'updated':
-            if (data.id !== meetingId)  return;
-            setMeeting(JSON.parse(event.data));
-            break;
+        /**
+         * Handles the case when the meeting is cancelled.
+         */
+        case 'cancelled':
+          if (data.id !== meetingId)  return;
+          setError("Meeting cancelled");
+          break;
+        /**
+         * Handles the case when the meeting is started.
+         */
+        case 'started':
+          console.log("Meeting started", data.id, meetingId);
+          if (data.id !== meetingId)  return;
+          window.location.href = data.url
+          break;
+        /**
+         * Handles the case when the meeting is updated.
+         */
+        case 'updated':
+          if (data.id !== meetingId)  return;
+          setMeeting(JSON.parse(event.data));
+          break;
       }
     };
 
@@ -80,6 +93,10 @@ export function MeetingPage({}): JSX.Element {
     }
   }, [router]);
 
+  /**
+   * Executes the fetchMeeting and listenEvents functions when the component mounts.
+   * @returns {void}
+   */
   useEffect(() => {
     fetchMeeting();
     listenEvents();

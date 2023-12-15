@@ -12,6 +12,7 @@ export type SelectProps = {
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(({ id, label, error, ...props }, ref) => {
     return (
         <div className="relative mb-8">
+            {/* If the select has a label props, render it */}
             {label && (
                 <label htmlFor={id} className="font-medium text-gray-700">
                     {label}
@@ -45,6 +46,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(({ id, label, e
                     <ChevronDown />
                 </div>
             </div>
+            {/* If the select has an error props, render it */}
             {error && <span className="text-sm text-red-500 px-2">{error}</span>}
         </div>
     );

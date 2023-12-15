@@ -1,12 +1,26 @@
 import { Meeting } from "@/types/Meeting";
 import { isToday, isTomorrow, format, isBefore } from "date-fns";
 
+/**
+ * Sets the time of the given date object to the specified hours and minutes.
+ * @param date - The date object to set the time on.
+ * @param hours - The hours to set.
+ * @param minutes - The minutes to set.
+ * @returns The modified date object with the updated time.
+ */
 export function setTime(date: Date, hours: number, minutes: number): Date {
   date.setHours(hours);
   date.setMinutes(minutes);
   return date;
 }
 
+/**
+ * Formats the start and end dates into a string representation.
+ * 
+ * @param start - The start date.
+ * @param end - The end date.
+ * @returns The formatted string representation of the dates.
+ */
 export function formatDate(start: Date, end: Date): string {
   let startFormat = "";
   let endFormat = "";
@@ -34,10 +48,21 @@ export function formatDate(start: Date, end: Date): string {
   return startFormat;
 }
 
+/**
+ * Formats a Date object to a string representation suitable for an input value.
+ * The format is "yyyy-MM-dd'T'HH:mm".
+ * 
+ * @param date - The Date object to format.
+ * @returns The formatted string representation of the date.
+ */
 export function formatDatetimeToInputValue(date: Date): string {
   return format(date, "yyyy-MM-dd'T'HH:mm");
 }
 
+/**
+ * Sorts an array of meetings in ascending order based on their start and end dates.
+ * @param meetings - The array of meetings to be sorted.
+ */
 export function sortMeetings(meetings: Meeting[]) {
   meetings.sort((m1, m2) => {
     // If m1 start date is before m2 start date, return -1

@@ -34,6 +34,7 @@ export const InputTags = forwardRef<HTMLDivElement, InputTagsProps>(
   ): JSX.Element => {
     return (
       <div className={classNames("relative mb-6 group", className)}>
+        {/* If the input tags has a label props, render it */}
         {label && (
           <label
             htmlFor={id}

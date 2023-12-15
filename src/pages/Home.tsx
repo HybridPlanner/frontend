@@ -1,18 +1,11 @@
-import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import { Button } from "../components/base/button/button";
-import { useState } from "react";
 import logoImg from "@/assets/img/logo.png";
-import avatarImg from "@/assets/img/avatar.png";
 
 export default function HomePage() {
-  const [name, setName] = useState("Louis DePierre");
-  const [email, setEmail] = useState("louis@depierre.com");
-  const [avatar, setAvatar] = useState(avatarImg);
-
   return (
     <div className="container px-4 mx-auto flex flex-col gap-3">
-      <Navbar user={{ name, email, avatar }} />
+      <Navbar />
       <div className="mt-12 mx-6 xl:ml-36 lg:w-2/3 xl:w-1/2 flex flex-col gap-2 items-start">
         <img src={logoImg} alt="logo" className="w-24 h-24 md:w-40 md:h-40" />
         <div className="w-full text-blue-500 text-3xl md:text-5xl font-normal leading-tight break-words tracking-tight">

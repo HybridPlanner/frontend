@@ -1,6 +1,6 @@
 import { updateMeeting, getMeeting } from "@/api/meetings";
 import { MeetingUpdateModal } from "@/components/meeting/MeetingUpdateModal";
-import { Meeting } from "@/types/Meeting";
+import { Meeting, MeetingStatus } from "@/types/Meeting";
 import { useCallback, useRef, useState } from "react";
 
 /**
@@ -35,7 +35,10 @@ export default function useMeetingUpdateModal({
       ref={updateMeetingModalRef}
       meeting={modalMeeting}
       onUpdate={async (id, data) => {
-        await updateMeeting(id, data);
+        if(modalMeeting?.status !== MeetingStatus.STARTED) {
+          await updateMeeting(id, data);
+        }
+
         if (updateCallback) {
           updateCallback();
         }

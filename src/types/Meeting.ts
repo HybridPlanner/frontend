@@ -7,6 +7,7 @@ export interface Meeting {
   attendees: { id: number; email: string }[];
   publicUrl?: string;
   started: boolean;
+  status?: MeetingStatus;
 }
 
 export interface CreateMeetingInput {
@@ -22,3 +23,9 @@ export type MeetingEvent =
   | { type: 'updated'; id: number; meeting: Meeting }
   | { type: 'cancelled'; id: number }
   | { type: 'started'; id: number; url: string };
+
+export enum MeetingStatus {
+  SCHEDULED = 'scheduled',
+  STARTED = 'started',
+  FINISHED = 'finished',
+}

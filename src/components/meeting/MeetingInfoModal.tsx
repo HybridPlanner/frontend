@@ -28,7 +28,7 @@ export const MeetingInfoModal = forwardRef<
       )}
     >
       {meeting && (
-        <form method="dialog">
+        <form method="dialog" className="flex flex-col gap-2 justify-start">
           {isBefore(new Date(), new Date(meeting.start_date)) && (
             <button
               id="edit"
@@ -52,34 +52,31 @@ export const MeetingInfoModal = forwardRef<
             {meeting.title}
           </h1>
 
-          <div className="m-4">
-            <MeetingDateBadge meeting={meeting} className="mb-4 inline-block" />
+          <MeetingDateBadge meeting={meeting} className="mb-4 inline-block" />
 
-            <div className="flex flex-col-reverse md:flex-row">
-              <div className="flex-1">
-                <p>{meeting.description}</p>
+          {meeting.description && (
+            <>
+              <h4 className="font-semibold">Description</h4>
+              <p>{meeting.description}</p>
+            </>
+          )}
 
-                <div className="my-4">
-                  <h2 className="font-semibold mb-2">Attendees</h2>
-                  {/* Attendees list */}
-                  <ul className="flex flex-wrap">
-                    {meeting.attendees.map((attendee) => (
-                      <li
-                        key={attendee.id}
-                        className={classNames(
-                          "bg-purple-300 text-purple-800 bg-opacity-50 rounded-full px-4",
-                          "before:rounded-full"
-                        )}
-                      >
-                        {attendee.email}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+          <div className="my-4">
+            <h4 className="font-semibold mb-2">Attendees</h4>
+            <ul className="flex gap-2 flex-wrap">
+              {meeting.attendees.map((attendee) => (
+                <li
+                  key={attendee.id}
+                  className={classNames(
+                    "px-3 py-1 rounded-full relative font-medium bg-purple-100 text-purple-700"
+                  )}
+                >
+                  {attendee.email}
+                </li>
+              ))}
+            </ul>
 
-              <aside className="w-full md:w-52">{/* Meeting actions */}</aside>
-            </div>
+            <aside className="w-full md:w-52">{/* Meeting actions */}</aside>
           </div>
         </form>
       )}

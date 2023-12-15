@@ -56,6 +56,12 @@ export function MeetingCreateForm({
   const endDate = watch("end_date", "Invalid Date");
   const now = new Date();
 
+  /**
+   * Handles the form submission for creating a meeting.
+   * 
+   * @param data - The form inputs.
+   * @returns A Promise that resolves when the meeting is created.
+   */
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setLoading(true);
 
@@ -74,6 +80,13 @@ export function MeetingCreateForm({
     setLoading(false);
   };
 
+  /**
+   * Updates the "end_date" value based on the start date and end date.
+   * If the start date or end date is invalid, the function returns early.
+   * If the minimal end date is after the current end date, the end date is updated.
+   * @param startDate The start date of the meeting.
+   * @param endDate The end date of the meeting.
+   */
   useEffect(() => {
     if (startDate === "Invalid Date" || endDate === "Invalid Date") return;
 

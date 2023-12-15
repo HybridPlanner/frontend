@@ -67,8 +67,6 @@ export const MeetingInfoModal = forwardRef<
                   </ul>
                 </div>
               </div>
-
-              <aside className="w-full md:w-52">{/* Meeting actions */}</aside>
             </div>
           </div>
         </form>

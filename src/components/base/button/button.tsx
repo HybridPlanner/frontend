@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import { FC, ReactElement, forwardRef } from "react";
 import { type LucideIcon } from "lucide-react";
 import { Link, LinkProps, To } from "react-router-dom";
 
@@ -22,6 +21,7 @@ type ButtonPropsAsLink = BaseButtonProps &
   >;
 
 type ButtonProps = ButtonPropsAsLink | (ButtonPropsAsButton & { to?: never });
+
 
 export function Button<T>({
   className,
@@ -55,6 +55,7 @@ export function Button<T>({
     className
   );
 
+  // If the button is a link, use the Link component from react-router-dom
   if (props.to) {
     const propsAsLink = props as ButtonPropsAsLink;
 

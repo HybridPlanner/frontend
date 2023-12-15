@@ -16,6 +16,7 @@ export const Title = forwardRef<HTMLHeadingElement, TitleProps>(
           "text-blue-600 text-2xl font-semibold inline-grid grid-flow-col gap-2 items-center"
         )}
       >
+        {/* If the button has an icon props, render it */}
         {Icon && (
           <span
             className="rounded-full bg-blue-100 px-3 py-3"

@@ -3,6 +3,11 @@ import { MeetingDeleteModal } from "@/components/meeting/MeetingDeleteModal";
 import { Meeting } from "@/types/Meeting";
 import { useCallback, useRef, useState } from "react";
 
+/**
+ * Custom hook for managing the meeting delete modal.
+ * @param deleteCallback - Optional callback function to be executed after a meeting is deleted.
+ * @returns An object containing the function to show the meeting delete modal and the JSX element for the modal.
+ */
 export default function useMeetingDeleteModal({
   deleteCallback,
 }: {
@@ -14,6 +19,11 @@ export default function useMeetingDeleteModal({
 
   const deleteMeetingModalRef = useRef<HTMLDialogElement>(null);
 
+  /**
+   * Show the deletion modal of the meeting.
+   * 
+   * @param meeting The meeting to delete.
+   */
   const showMeetingDeleteModal = useCallback(
     async (meeting: Meeting) => {
       const meetingData = await getMeeting(meeting.id);

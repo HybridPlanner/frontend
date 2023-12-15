@@ -56,6 +56,7 @@ export function MeetingCard({
         <MeetingDateBadge meeting={meeting} />
       </div>
 
+      {/* Is the meeting isn't a previous meeting, then show the actions buttons */}
       {!isPrevious && (
         <div className="row-start-1 row-span-2 col-start-3 invisible group-hover:visible group-focus-within:visible text-gray-600 flex flex-col gap-2">
           <div className="flex flex-row z-[2]">

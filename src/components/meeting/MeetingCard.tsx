@@ -72,24 +72,27 @@ export function MeetingCard({
             )}
 
             {meeting?.status !== MeetingStatus.STARTED &&
-              <button
-                type="button"
-                className="btn hover:text-blue-500 p-2 transition rounded-full hover:bg-gray-400 hover:bg-opacity-20"
-                aria-label="Update meeting"
-                onClick={() => onEditMeeting?.(meeting)}
-              >
-                <Pen className="w-5 h-5" />  
-              </button>
+              <>
+                <button
+                  type="button"
+                  className="btn hover:text-blue-500 p-2 transition rounded-full hover:bg-gray-400 hover:bg-opacity-20"
+                  aria-label="Update meeting"
+                  onClick={() => onEditMeeting?.(meeting)}
+                >
+                  <Pen className="w-5 h-5" />  
+                </button>
+                <button
+                  type="button"
+                  className="btn hover:text-red-500 p-2 transition rounded-full hover:bg-gray-400 hover:bg-opacity-20"
+                  aria-label="Delete meeting"
+                  onClick={() => onDeleteMeeting?.(meeting)}
+                >
+                  <Trash2 className="w-5 h-5" />
+                </button>
+              </>
             }
             
-            <button
-              type="button"
-              className="btn hover:text-red-500 p-2 transition rounded-full hover:bg-gray-400 hover:bg-opacity-20"
-              aria-label="Delete meeting"
-              onClick={() => onDeleteMeeting?.(meeting)}
-            >
-              <Trash2 className="w-5 h-5" />
-            </button>
+
           </div>
         </div>
       )}

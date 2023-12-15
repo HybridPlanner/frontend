@@ -8,6 +8,7 @@ import "./dashboard.css";
 import useMeetingInfoModal from "@/hooks/useMeetingInfoModal";
 import useMeetingDeleteModal from "@/hooks/useMeetingDeleteModal";
 import useFetchMeetings from "@/hooks/useFetchMeetings";
+import useMeetingUpdateModal from "@/hooks/useMeetingUpdateModal";
 import { Header } from "@/components/Header";
 
 export function MeetingsDashboard(): JSX.Element {
@@ -21,6 +22,9 @@ export function MeetingsDashboard(): JSX.Element {
   } = useFetchMeetings();
 
   const { showMeetingInfoModal, meetingInfoModal } = useMeetingInfoModal();
+  const { showMeetingUpdateModal, meetingUpdateModal } = useMeetingUpdateModal({
+    updateCallback: refreshMeetingList,
+  });
   const { showMeetingDeleteModal, meetingDeleteModal } = useMeetingDeleteModal({
     deleteCallback: refreshMeetingList,
   });
@@ -66,6 +70,7 @@ export function MeetingsDashboard(): JSX.Element {
                           meeting={meeting}
                           onOpenMeeting={(m) => showMeetingInfoModal(m)}
                           onDeleteMeeting={(m) => showMeetingDeleteModal(m)}
+                          onEditMeeting={(m) => showMeetingUpdateModal(m)}
                           key={meeting.id}
                           className="hover:bg-slate-50"
                         />
@@ -139,6 +144,7 @@ export function MeetingsDashboard(): JSX.Element {
 
           {meetingInfoModal}
           {meetingDeleteModal}
+          {meetingUpdateModal}
         </div>
 
         <div className="flex-1 relative">

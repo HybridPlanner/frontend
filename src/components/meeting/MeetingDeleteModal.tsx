@@ -4,22 +4,20 @@ import {
   forwardRef,
   HTMLAttributes,
   useCallback,
-  type ReactElement,
   useRef,
   useImperativeHandle,
 } from "react";
 import { Button } from "../base/button/button";
 import { X } from "lucide-react";
-import { MeetingDateBadge } from "./MeetingDateBadge";
 
-type MeetingInfoModalProps = {
-  meeting: Meeting | undefined;
+type MeetingDeleteModalProps = {
+  meeting: Meeting ;
   onDelete: (meeting: Meeting) => void;
 } & HTMLAttributes<HTMLDialogElement>;
 
 export const MeetingDeleteModal = forwardRef<
   HTMLDialogElement,
-  MeetingInfoModalProps
+  MeetingDeleteModalProps
 >(({ meeting, className, onDelete, ...props }, ref) => {
   const modalRef = useRef<HTMLDialogElement>(null);
 
@@ -47,7 +45,6 @@ export const MeetingDeleteModal = forwardRef<
         "bg-white rounded-xl shadow-lg overflow-hidden"
       )}
     >
-      {meeting && (
         <form method="dialog">
           <button
             id="close"
@@ -87,7 +84,6 @@ export const MeetingDeleteModal = forwardRef<
             </Button>
           </menu>
         </form>
-      )}
     </dialog>
   );
 });

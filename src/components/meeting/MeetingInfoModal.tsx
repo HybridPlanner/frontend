@@ -29,16 +29,6 @@ export const MeetingInfoModal = forwardRef<
     >
       {meeting && (
         <form method="dialog">
-          {isBefore(new Date(), new Date(meeting.start_date)) && (
-            <button
-              id="edit"
-              aria-label="Edit meeting"
-              formNoValidate
-              className="absolute top-8 right-20 btn p-2 rounded-full hover:bg-gray-400 hover:bg-opacity-20"
-            >
-              <Pencil />
-            </button>
-          )}
           <button
             id="close"
             aria-label="close"

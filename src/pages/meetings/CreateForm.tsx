@@ -1,22 +1,23 @@
 import { createMeeting } from "@/api/meetings";
 import { Button } from "@/components/base/button/button";
 import { Input } from "@/components/form/input/input";
-import { InputTags } from "@/components/form/inputTags/inputTags";
 import { Textarea } from "@/components/form/textarea/textarea";
 import { formatDatetimeToInputValue as dateForInput } from "@/utils/date";
 import classNames from "classnames";
 import { isAfter, addMinutes } from "date-fns";
-import { Edit3, Calendar, Pencil, Loader2 } from "lucide-react";
+import { Edit3, Calendar, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { AttendeesInput } from "./AttendeesInput";
+import { Tag } from "react-tag-autocomplete";
 
 const END_DATE_LIMIT = 5;
 
-interface FormInputs {
+interface CreateMeetingForm {
   title: string;
   start_date: string;
   end_date: string;
-  attendees: string[];
+  attendees: Tag[];
   description: string;
 }
 
@@ -35,7 +36,8 @@ export function MeetingCreateForm({
     watch,
     trigger,
     setValue,
-  } = useForm<FormInputs>({
+    setError,
+  } = useForm<CreateMeetingForm>({
     mode: "all",
     defaultValues: {
       start_date: dateForInput(addMinutes(new Date(), END_DATE_LIMIT)),
@@ -56,20 +58,16 @@ export function MeetingCreateForm({
   const endDate = watch("end_date", "Invalid Date");
   const now = new Date();
 
-  /**
-   * Handles the form submission for creating a meeting.
-   * 
-   * @param data - The form inputs.
-   * @returns A Promise that resolves when the meeting is created.
-   */
-  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+  const onSubmit: SubmitHandler<CreateMeetingForm> = async (data) => {
     setLoading(true);
 
     await createMeeting({
       ...data,
       start_date: new Date(data.start_date),
       end_date: new Date(data.end_date),
-      attendees: data.attendees || [],
+      attendees: (data.attendees || []).map(
+        (attendee) => attendee.value as string
+      ),
     });
 
     await onFormCreated?.();
@@ -102,7 +100,10 @@ export function MeetingCreateForm({
   }, [startDate, endDate]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={classNames({ loading })}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className={classNames({ loading }, "flex flex-col gap-4")}
+    >
       <Input
         id="title"
         label="Meeting name"
@@ -150,20 +151,17 @@ export function MeetingCreateForm({
         />
       </div>
 
-      <div className="flex flex-row gap-4 w-full">
-        <InputTags
-          id="attendees"
-          label="Attendees"
-          icon={<Pencil className="w-5 h-5" />}
-          placeholder="Enter attendees emails, separated by a comma."
-          className="w-full"
-          error={errors.attendees?.message}
-          value={watch("attendees")}
-          onChange={(emails: string[]) => {
-            setValue("attendees", emails, { shouldValidate: true });
-          }}
-        />
-      </div>
+      <AttendeesInput
+        id="attendees"
+        error={errors.attendees?.message}
+        setError={(message: string) => setError("attendees", { message })}
+        value={watch("attendees")}
+        onChange={(values) => {
+          setValue("attendees", values, {
+            shouldValidate: true,
+          });
+        }}
+      />
 
       <Textarea
         id="description"

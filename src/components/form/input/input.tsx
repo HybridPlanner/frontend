@@ -12,8 +12,7 @@ export type InputProps = {
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ id, label, error, className, ...props }, ref) => {
     return (
-      <div className={classNames("relative mb-6 group", className)}>
-        {/* If the button has a label props, render it */}
+      <div className={classNames("relative group", className)}>
         {label && (
           <label
             htmlFor={id}

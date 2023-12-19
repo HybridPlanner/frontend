@@ -1,4 +1,4 @@
-import { Meeting } from "@/types/Meeting";
+import { Meeting, MeetingStatus } from "@/types/Meeting";
 import classNames from "classnames";
 import { format } from "date-fns";
 import { LinkIcon, Pen, Trash2 } from "lucide-react";
@@ -37,7 +37,7 @@ export function MeetingCard({
             {format(meeting.start_date, "LLL.").toUpperCase()}
           </span>
           <span className="text-gray-900 font-bold text-xl px-2 py-1 leading-4 text-center">
-            {meeting.start_date.getDate()}
+            {meeting.start_date.getDate()} 
           </span>
         </div>
       </div>
@@ -71,23 +71,28 @@ export function MeetingCard({
               </Link>
             )}
 
-            <button
-              type="button"
-              className="btn hover:text-blue-500 p-2 transition rounded-full hover:bg-gray-400 hover:bg-opacity-20"
-              aria-label="Update meeting"
-              onClick={() => onEditMeeting?.(meeting)}
-            >
-              <Pen className="w-5 h-5" />  
-            </button>
+            {meeting?.status !== MeetingStatus.STARTED &&
+              <>
+                <button
+                  type="button"
+                  className="btn hover:text-blue-500 p-2 transition rounded-full hover:bg-gray-400 hover:bg-opacity-20"
+                  aria-label="Update meeting"
+                  onClick={() => onEditMeeting?.(meeting)}
+                >
+                  <Pen className="w-5 h-5" />  
+                </button>
+                <button
+                  type="button"
+                  className="btn hover:text-red-500 p-2 transition rounded-full hover:bg-gray-400 hover:bg-opacity-20"
+                  aria-label="Delete meeting"
+                  onClick={() => onDeleteMeeting?.(meeting)}
+                >
+                  <Trash2 className="w-5 h-5" />
+                </button>
+              </>
+            }
             
-            <button
-              type="button"
-              className="btn hover:text-red-500 p-2 transition rounded-full hover:bg-gray-400 hover:bg-opacity-20"
-              aria-label="Delete meeting"
-              onClick={() => onDeleteMeeting?.(meeting)}
-            >
-              <Trash2 className="w-5 h-5" />
-            </button>
+
           </div>
         </div>
       )}

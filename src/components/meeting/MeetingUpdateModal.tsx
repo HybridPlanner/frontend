@@ -17,6 +17,7 @@ import { addMinutes, isAfter, isBefore } from "date-fns";
 import { Input } from "../form/input/input";
 import { InputTags } from "../form/inputTags/inputTags";
 import { Textarea } from "../form/textarea/textarea";
+import { Tag } from "react-tag-autocomplete";
 
 type MeetingUpdateModal = {
   meeting: Meeting | undefined;
@@ -36,7 +37,7 @@ interface FormInputs {
 export const MeetingUpdateModal = forwardRef<
   HTMLDialogElement,
   MeetingUpdateModal
->(({ meeting, className, onUpdate: onUpdate, ...props }, ref) => {
+>(({ meeting, className, onUpdate, ...props }, ref) => {
   const modalRef = useRef<HTMLDialogElement>(null);
 
   const {
@@ -186,10 +187,11 @@ export const MeetingUpdateModal = forwardRef<
               icon={<Pencil className="w-5 h-5" />}
               placeholder="Enter attendees emails, separated by a comma."
               className="w-full"
+              emptyState="No attendees found."
               error={errors.attendees?.message}
-              value={watch("attendees")}
-              onChange={(emails: string[]) => {
-                setValue("attendees", emails, { shouldValidate: true });
+              value={watch("attendees").map((email) => ({ label: email, value: email } satisfies Tag))}
+              onChange={(emails: Tag[]) => {
+                setValue("attendees", emails.map(tags => tags.value as string), { shouldValidate: true });
               }}
             />
           </div>

@@ -9,6 +9,7 @@ type BaseButtonProps = {
   bgColor?: string;
   outlineColor?: string;
   borderColor?: string;
+  disabled?: boolean
 };
 
 type ButtonPropsAsButton = BaseButtonProps &
@@ -33,6 +34,8 @@ export function Button<T>({
   borderColor = "",
   icon: Icon,
   iconClassName = "",
+
+  disabled = false,
 
   ...props
 }: ButtonProps) {
@@ -60,7 +63,7 @@ export function Button<T>({
     const propsAsLink = props as ButtonPropsAsLink;
 
     return (
-      <Link {...propsAsLink} className={classes}>
+      <Link {...propsAsLink} className={classes} aria-disabled={disabled}>
         {Icon && <Icon className={classNames("w-6 h-6", iconClassName)} />}
         {children}
       </Link>
@@ -70,7 +73,7 @@ export function Button<T>({
   const propsAsButton = props as ButtonPropsAsButton;
 
   return (
-    <button {...propsAsButton} className={classes}>
+    <button {...propsAsButton} className={classes} disabled={disabled}>
       {Icon && <Icon className={classNames("w-6 h-6", iconClassName)} />}
       {children}
     </button>

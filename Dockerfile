@@ -1,12 +1,11 @@
-FROM node:18 as builder
+FROM node:18-alpine as builder
 
 #######################################################################
 WORKDIR /app
 
-ENV NODE_ENV production
-
 COPY . .
-RUN npm ci
+RUN npm install
+ENV NODE_ENV=production
 RUN npm run build
 RUN npm prune --production
 

@@ -20,7 +20,7 @@ interface CreateMeeting {
 }
 
 export interface CreateMeetingInput extends CreateMeeting {
-  attendees: Tag[]
+  attendees: string[]
 }
 
 export interface CreateMeetingPayload extends CreateMeeting {

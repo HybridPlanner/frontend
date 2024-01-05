@@ -1,4 +1,4 @@
-import { Meeting } from "@/types/Meeting";
+import { Meeting, MeetingStatus } from "@/types/Meeting";
 import { formatDate } from "@/utils/date";
 import classNames from "classnames";
 import { format, isToday, isTomorrow } from "date-fns";
@@ -26,7 +26,7 @@ export function MeetingDateBadge({
   };
 
   const getContent = () => {
-    if (meeting.started) {
+    if (meeting?.status !== MeetingStatus.STARTED) {
       return (
         "Ongoing until " +
         formatOngoingDate(meeting.start_date, meeting.end_date)
@@ -36,7 +36,7 @@ export function MeetingDateBadge({
   };
 
   const getBadgeClass = () => {
-    if (meeting.started) {
+    if (meeting?.status === MeetingStatus.STARTED) {
       return "before:bg-red-500 text-red-700 bg-red-100 before:animate-pulse";
     }
 

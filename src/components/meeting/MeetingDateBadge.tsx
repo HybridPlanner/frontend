@@ -26,7 +26,7 @@ export function MeetingDateBadge({
   };
 
   const getContent = () => {
-    if (meeting?.status !== MeetingStatus.STARTED) {
+    if (meeting?.status === MeetingStatus.STARTED) {
       return (
         "Ongoing until " +
         formatOngoingDate(meeting.start_date, meeting.end_date)

@@ -10,14 +10,14 @@ import {
   useEffect,
 } from "react";
 import { Button } from "../base/button/button";
-import { Calendar, Edit3, Loader2, Pencil, X } from "lucide-react";
+import { Calendar, Edit3, Loader2, X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formatDatetimeToInputValue as dateForInput } from "@/utils/date";
 import { addMinutes, isAfter, isBefore } from "date-fns";
 import { Input } from "../form/input/input";
-import { InputTags } from "../form/inputTags/inputTags";
 import { Textarea } from "../form/textarea/textarea";
 import { Tag } from "react-tag-autocomplete";
+import { AttendeesInput } from "@/pages/meetings/AttendeesInput";
 
 type MeetingUpdateModal = {
   meeting: Meeting | undefined;
@@ -30,7 +30,7 @@ interface FormInputs {
   title: string;
   start_date: string;
   end_date: string;
-  attendees: string[];
+  attendees: Tag[];
   description: string;
 }
 
@@ -48,6 +48,7 @@ export const MeetingUpdateModal = forwardRef<
     watch,
     getValues,
     trigger,
+    setError,
     setValue,
   } = useForm<FormInputs>({
     mode: "all",
@@ -79,14 +80,23 @@ export const MeetingUpdateModal = forwardRef<
     });
   }, [startDate, endDate]);
 
+  const attendeesToTag = (attendees?: Meeting['attendees']) => {
+    if (!attendees) return [];
+    return attendees.map(a => ({ label: a.email, value: a.email } satisfies Tag));
+  };
+
+  const tagToAttendees = (tag: Tag[]): string[] => {
+    return tag.map(t => t.value).filter((v): v is string => typeof v === 'string');
+  }
+
   useEffect(() => {
     if (!meeting) return;
 
-    setValue("title", meeting?.title);
-    setValue("description", meeting?.description || '');
-    setValue("start_date", dateForInput(meeting?.start_date));
-    setValue("end_date", dateForInput(meeting?.end_date));
-    setValue("attendees", meeting?.attendees.map((a) => a.email));
+    setValue("title", meeting.title);
+    setValue("description", meeting.description || '');
+    setValue("start_date", dateForInput(meeting.start_date));
+    setValue("end_date", dateForInput(meeting.end_date));
+    setValue("attendees", attendeesToTag(meeting.attendees));
 
     trigger();
   }, [meeting]);
@@ -101,7 +111,7 @@ export const MeetingUpdateModal = forwardRef<
         description: vals.description,
         start_date: new Date(vals.start_date),
         end_date: new Date(vals.end_date),
-        attendees: vals.attendees || [],
+        attendees: tagToAttendees(vals.attendees),
       });
     }
 
@@ -181,17 +191,15 @@ export const MeetingUpdateModal = forwardRef<
           </div>
 
           <div className="flex flex-row gap-4 w-full">
-            <InputTags
+            <AttendeesInput
               id="attendees"
-              label="Attendees"
-              icon={<Pencil className="w-5 h-5" />}
-              placeholder="Enter attendees emails, separated by a comma."
-              className="w-full"
-              emptyState="No attendees found."
               error={errors.attendees?.message}
-              value={watch("attendees").map((email) => ({ label: email, value: email } satisfies Tag))}
-              onChange={(emails: Tag[]) => {
-                setValue("attendees", emails.map(tags => tags.value as string), { shouldValidate: true });
+              setError={(message: string) => setError("attendees", { message })}
+              value={watch("attendees")}
+              onChange={(values) => {
+                setValue("attendees", values, {
+                  shouldValidate: true,
+                });
               }}
             />
           </div>

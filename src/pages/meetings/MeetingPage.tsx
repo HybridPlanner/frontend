@@ -82,7 +82,7 @@ export function MeetingPage({}): JSX.Element {
          */
         case 'updated':
           if (data.id !== meetingId)  return;
-          setMeeting(JSON.parse(event.data));
+          fetchMeeting();
           break;
       }
     };
